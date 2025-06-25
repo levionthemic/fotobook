@@ -1,0 +1,53 @@
+<header class="header">
+  <div class="header__logo-search">
+    <%= link_to "Fotobook", "/", class: "header__logo" %>
+    <form action="" class="header__search">
+      <input
+        type="text"
+        placeholder="Select Photo / Album"
+        class="form-control header__search-input"
+      />
+    </form>
+  </div>
+
+  <% if logged_in?%>
+    <div class="header__user">
+      <div class="header__user--info">
+        <div class="header__user--avatar">HN</div>
+        <div><%= current_user[:name] %></div>
+      </div>
+      
+      <%= form_with url: logout_path, method: :delete, local: true, html: { id: "logout-form" } do %>
+
+        <button type="button" class="header__user--logout" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Logout
+        </button>
+       
+
+        <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo!</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Bạn có chắc chắn muốn đăng xuất?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+              <%= submit_tag "Logout", class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end%>
+
+      
+    </div>
+  <% else %>
+    <%= link_to "Login", "/login", class: "header__login" %>
+  <% end %>
+</header>

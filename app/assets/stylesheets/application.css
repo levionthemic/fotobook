@@ -1,0 +1,50 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --primary-color: #3C5999;
+  --header-height: 42px;
+  --sidebar-width: 14rem;
+
+  --bs-primary: var(--primary-color);
+  --bs-link-color-rgb: 60,89,153;
+}
+
+.btn-outline-primary {
+  --bs-btn-active-bg: var(--primary-color);
+  --bs-btn-color: var(--primary-color);
+  --bs-btn-border-color: var(--primary-color);
+  --bs-btn-active-border-color: var(--primary-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 15px;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
+}
+
+ /*
+ *= require partials
+ *= require login-page
+ */

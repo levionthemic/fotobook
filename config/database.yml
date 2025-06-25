@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: levion
+  password: '7435'
+  host: localhost
+
+development:
+  <<: *default
+  database: final_app
+
+test:
+  <<: *default
+  database: final_app_test
+
+production:
+  <<: *default
+  database: myapp_production
+  username: levion
