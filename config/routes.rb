@@ -1,14 +1,23 @@
 Rails.application.routes.draw do
   root "feed#index"
 
-  get "login", to: "auth#login"
-  post "login", to: "auth#loginPost"
-  get "signup", to: "auth#signup"
-  post "signup", to: "auth#signupPost"
-  delete "/logout", to: "auth#logout", as: :logout
+  devise_for :users, path: "", path_names: {
+    sign_in: "login",
+    sign_out: "logout",
+    sign_up: "signup"
+  }
 
-  get "profile", to: "profile#index"
+
+  # get "login", to: "auth#login"
+  # post "login", to: "auth#loginPost"
+  # get "signup", to: "auth#signup"
+  # post "signup", to: "auth#signupPost"
+  # delete "/logout", to: "auth#logout", as: :logout
+
+  get "discover", to: "feed#show_discover"
+  # get "profile", to: "profile#index"
   resources :photos
+  resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -21,5 +30,4 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  get "products", to: "products#index"
 end

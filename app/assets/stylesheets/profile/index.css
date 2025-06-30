@@ -8,10 +8,11 @@
   display: flex;
   align-items: center;
   padding: 50px 0;
+  gap: 20px;
 }
 
 .profile-info__avatar {
-  width: 13%;
+  width: 150px;
   display: flex;
   align-items: center;
   justify-content: left;
@@ -40,9 +41,33 @@
   margin-bottom: .5rem;
 }
 
+.profile-info__badge--me {
+  padding: 2px 10px;
+  border: 3px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 9999px;
+  text-align: center;
+  width: fit-content;
+  margin-bottom: .5rem;
+}
+
 .profile-info__name {
   font-weight: bold;
   font-size: 2rem;
+}
+
+.profile-info__add-photo {
+  background: #219653;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 2px 12px;
+  color: white;
+  width: fit-content;
+  margin-left: auto;
+  position: relative;
+  top: -50px;
 }
 
 .profile-info__tags {
@@ -54,11 +79,22 @@
 .profile-info__tags--item {
   font-size: 80%;
   font-weight: 500;
+  text-decoration: none;
+  font-size: 13px;
+  color: gray;
 }
 
 .profile-info__tags--item:hover {
   color: var(--primary-color);
   cursor: pointer;
+}
+
+.profile-info__tags--item--active {
+  color: var(--primary-color);
+  font-size: 80%;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 13px;
 }
 
 .profile-info__tags--divider {

@@ -52,7 +52,7 @@
   justify-content: center;
 }
 
-.signup-wrap__form--submit button {
+.signup-wrap__form--submit input {
   color: white;
   background-color: var(--primary-color);
   padding: 6px 30px;

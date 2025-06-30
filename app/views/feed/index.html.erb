@@ -5,206 +5,41 @@
       role="group"
       aria-label="Basic radio toggle button group"
     >
-      <div>
-        <input
-          type="radio"
-          class="btn-check"
-          name="typepage"
-          id="photo"
-          autocomplete="off"
-          checked
-        />
-        <label class="btn btn-outline-primary" for="photo">PHOTO</label>
-
-      </div>
-
-<div>
-
-      <input
-        type="radio"
-        class="btn-check"
-        name="typepage"
-        id="album"
-        autocomplete="off"
-      />
+      <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" checked />
+      <label class="btn btn-outline-primary" for="photo">PHOTO</label>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" />
       <label class="btn btn-outline-primary" for="album">ALBUM</label>
-</div>
     </div>
-
     <div class="guest-feeds-list">
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
+      <% (0..20).each do |i| %>
+        <div class="guest-feeds-list__item">
+          <div class="guest-feeds-list__item--image">
+            <%= image_tag "sample.jpg", alt: "" %>
           </div>
-
-          <div class="guest-feeds-list__item--time">
+          <div class="guest-feeds-list__item--content">
             <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
+              <div class="d-flex gap-2 align-items-center">
+                <div class="guest-feeds-list__item--avatar">HN</div>
+                <span>Hieu Nguyen</span>
+              </div>
+              <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
+              <p class="guest-feeds-list__item--desc">
+                Aliquam dictum nec massa ac consequat. Etiam dignissim
+                tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
+                Curabitur malesuada libero in nibh pretium, sed malesuada nisi
+                feugiat.
+              </p>
             </div>
-            <p>4:56 pm 01/04/2018</p>
+            <div class="guest-feeds-list__item--time">
+              <div class="">
+                <i class="fa-solid fa-heart"></i>
+                <span>123</span>
+              </div>
+              <p>4:56 pm 01/04/2018</p>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

@@ -52,7 +52,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  padding: 2px 5px;
 }
+
+.header__user--info:hover {
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 .header__user--avatar {
   background-color: white;
   color: var(--primary-color);
@@ -67,12 +75,17 @@
   font-weight: 500;
 }
 
+.header__user--logout:hover {
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 /* Sidebar */
 .sidebar {
   max-width: var(--sidebar-width);
   display: flex;
   position: relative;
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
 }
 
 .sidebar-list {
@@ -89,4 +102,9 @@
 
 .sidebar-list__item {
   font-weight: 700;
+  color: gray;
+}
+
+.sidebar-list__item--active {
+  color: var(--primary-color);
 }

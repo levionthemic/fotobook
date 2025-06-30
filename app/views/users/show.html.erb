@@ -1,0 +1,47 @@
+<div class="profile">
+  <div class="profile-info">
+    <div class="profile-info__avatar">
+      <%= image_tag "unknown-avatar.png", alt: "Avatar", class: "" %>
+    </div>
+    <div class="profile-info__content">
+      <% if @param_user_id.to_i === @user.id %>
+        <div class="profile-info__badge--me">Edit profile</div>
+      <% else %>
+        <div class="profile-info__badge">Following</div>
+      <% end %>
+      <div class="profile-info__name"><%= "#{@user.first_name} #{@user.last_name}" %></div>
+      <div class="profile-info__tags">
+        <%= link_to user_path(@user, tab: 'photos'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'photos')] do %>
+          <span class="fs-4">108</span>
+          <span>PHOTOS</span>
+        <% end %>
+        <div class="profile-info__tags--divider"></div>
+        <%= link_to user_path(@user, tab: 'albums'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'albums')] do %>
+          <span class="fs-4">43</span>
+          <span>ALBUMS</span>
+        <% end %>
+        <div class="profile-info__tags--divider"></div>
+        <%= link_to user_path(@user, tab: 'followings'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'followings')] do %>
+          <span class="fs-4">22</span>
+          <span>FOLLOWINGS</span>
+        <% end %>
+        <div class="profile-info__tags--divider"></div>
+        <%= link_to user_path(@user, tab: 'followers'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'followers')] do %>
+          <span class="fs-4">13</span>
+          <span>FOLLOWERS</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% if @param_user_id.to_i === @user.id && @tab == 'photos' %>
+    <div class="profile-info__add-photo">Add Photo</div>
+  <% end %>
+  <div class="profile-list row g-5">
+    <% Array.new(20).each do %>
+      <div class="d-flex flex-column align-items-center justify-content-center col gap-2">
+        <%= image_tag "sample.jpg", alt: "", class: "rounded" %>
+        <span>Photo title goes here</span>
+      </div>
+    <% end %>
+  </div>
+</>
