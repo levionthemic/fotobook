@@ -11,23 +11,22 @@
       <label class="btn btn-outline-primary" for="album">ALBUM</label>
     </div>
     <div class="guest-feeds-list">
-      <% (0..20).each do |i| %>
+      <% @photos.each do |photo| %>
         <div class="guest-feeds-list__item">
           <div class="guest-feeds-list__item--image">
-            <%= image_tag "sample.jpg", alt: "" %>
+            <%= image_tag "#{photo.image}", alt: "" %>
           </div>
           <div class="guest-feeds-list__item--content">
             <div class="">
               <div class="d-flex gap-2 align-items-center">
-                <div class="guest-feeds-list__item--avatar">HN</div>
-                <span>Hieu Nguyen</span>
+                <div class="guest-feeds-list__item--avatar">
+                  <%= image_tag "#{photo.user.avatar}", alt: "Avatar", class: "" %>
+                </div>
+                <span><%= "#{photo.user.first_name} #{photo.user.last_name}" %></span>
               </div>
-              <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
+              <p class="my-2"><b><%= photo.title %></b></p>
               <p class="guest-feeds-list__item--desc">
-                Aliquam dictum nec massa ac consequat. Etiam dignissim
-                tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-                Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-                feugiat.
+                <%= photo.description %>
               </p>
             </div>
             <div class="guest-feeds-list__item--time">

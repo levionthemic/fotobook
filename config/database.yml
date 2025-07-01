@@ -1,19 +1,21 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: levion
-  password: '7435'
-  host: localhost
+  username: <%= ENV['DB_USERNAME'] || 'postgres' %>
+  password: <%= ENV['DB_PASSWORD'] || '7435' %>
+  host: <%= ENV['DB_HOST'] || 'localhost' %>
+  port: <%= ENV['DB_PORT'] || 5432 %>
+  database: <%= ENV['DB_NAME'] || 'postgres' %>
 
 development:
   <<: *default
-  database: final_app
+  database: final-app
 
 test:
   <<: *default
-  database: final_app_test
+  database: final-app-test
 
 production:
   <<: *default
   database: myapp_production
-  username: levion
+  # username: levion

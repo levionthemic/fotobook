@@ -16,8 +16,20 @@ Rails.application.routes.draw do
 
   get "discover", to: "feed#show_discover"
   # get "profile", to: "profile#index"
-  resources :photos
-  resources :users
+
+  resources :users, only: [ :show, :edit, :update, :destroy ] do
+    resources :photos, except: [ :index ], shallow: true
+    resources :albums, except: [ :index ], shallow: true
+
+    member do
+      get :photos
+      get :albums
+      get :followers
+      get :followings
+    end
+  end
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

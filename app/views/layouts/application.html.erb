@@ -36,8 +36,10 @@
       <% end %>
       <div class="row g-0" style="background-color: #F8F8F8; max-width: 100vw;">
         <%= render "shared/sidebar" unless devise_controller? %>
-        <div class="col-9">
-          <%= yield %>
+        <div class="col-10 row g-0">
+          <div class="col-11">
+            <%= yield %>
+          </div>
         </div>
       </div>
     </main>

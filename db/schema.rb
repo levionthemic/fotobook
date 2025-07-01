@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_30_023031) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -27,6 +27,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_30_023031) do
   create_table "albums", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title", limit: 140, null: false
+    t.text "description", null: false
+    t.integer "sharing_mode", default: 0, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_albums_on_user_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -95,6 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_30_023031) do
 
   add_foreign_key "album_photos", "albums"
   add_foreign_key "album_photos", "photos"
+  add_foreign_key "albums", "users"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
   add_foreign_key "likes", "users"

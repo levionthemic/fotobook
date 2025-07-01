@@ -15,4 +15,16 @@ class UsersController < ApplicationController
       @items = @user.followings
     end
   end
+
+  def photos
+  end
+
+  def albums
+  end
+
+  def followers
+  end
+
+  def followings
+  end
 end

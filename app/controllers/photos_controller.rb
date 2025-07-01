@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-  before_action :set_photo, only: %i[ show edit update destroy ]
+  # before_action :set_photo, only: %i[ show edit update destroy ]
 
   # GET /photos or /photos.json
   def index
@@ -8,11 +8,13 @@ class PhotosController < ApplicationController
 
   # GET /photos/1 or /photos/1.json
   def show
+    @user_id = params[:id]
   end
 
   # GET /photos/new
   def new
     @photo = Photo.new
+    @user_id = params[:user_id]
   end
 
   # GET /photos/1/edit
