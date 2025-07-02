@@ -1,40 +1,44 @@
-<div class="guest-feeds">
-  <div class="guest-feeds-wrap">
-    <div
-      class="btn-group"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" checked />
-      <label class="btn btn-outline-primary" for="photo">PHOTO</label>
-      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" />
-      <label class="btn btn-outline-primary" for="album">ALBUM</label>
+<div class="feeds" >
+  <div class="feeds-wrap">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" <%= 'checked' if @tab == 'photos' %> />
+      <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary", data: { turbo_action: "replace", url: root_path(tab: "photos") } %>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab   == 'albums' %>/>
+      <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary", data: { turbo_action: "replace", url: root_path(tab: "albums") } %>
     </div>
-    <div class="guest-feeds-list">
-      <% @photos.each do |photo| %>
-        <div class="guest-feeds-list__item">
-          <div class="guest-feeds-list__item--image">
-            <%= image_tag "#{photo.image}", alt: "" %>
+    <div class="feeds-list">
+      <% @items.each do |item| %>
+        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= j item.description %>" data-image="<%= url_for(item.image) if params[:tab] == 'photos' %>">
+          <div class="feeds-list__item--image">
+            <% if !params[:tab] || params[:tab] == 'photos' %>
+              <%= image_tag "#{item.image}", alt: "" %>
+            <% else %>
+              <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+              </div>
+            <% end  %>
           </div>
-          <div class="guest-feeds-list__item--content">
+          <div class="feeds-list__item--content">
             <div class="">
               <div class="d-flex gap-2 align-items-center">
-                <div class="guest-feeds-list__item--avatar">
-                  <%= image_tag "#{photo.user.avatar}", alt: "Avatar", class: "" %>
+                <div class="feeds-list__item--avatar">
+                  <%= image_tag "#{item.user.avatar}", alt: "Avatar", class: "" %>
                 </div>
-                <span><%= "#{photo.user.first_name} #{photo.user.last_name}" %></span>
+                <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
               </div>
-              <p class="my-2"><b><%= photo.title %></b></p>
-              <p class="guest-feeds-list__item--desc">
-                <%= photo.description %>
+              <p class="my-2"><b><%= item.title %></b></p>
+              <p class="feeds-list__item--desc">
+                <%= item.description %>
               </p>
             </div>
-            <div class="guest-feeds-list__item--time">
-              <div class="">
-                <i class="fa-solid fa-heart"></i>
+            <div class="feeds-list__item--time">
+              <div class="d-flex align-items-center gap-1" style="cursor: pointer">
+                <i class="fa-solid fa-heart heart-icon"></i>
                 <span>123</span>
               </div>
-              <p>4:56 pm 01/04/2018</p>
+              <p><%= item.created_at.strftime("%-I:%M %P %d/%m/%Y") %></p>
             </div>
           </div>
         </div>
@@ -42,3 +46,46 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="viewFeed" tabindex="-1" aria-labelledby="viewFeedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="viewFeedLabel">
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <div id="modal-photo-description"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("label[data-url]").forEach((label) => {
+      label.addEventListener("click", () => {
+        const url = label.dataset.url;
+        if (url) window.location.href = url;
+      });
+    });
+
+    const modal = document.getElementById("viewFeed");
+    const titleEl = modal.querySelector(".modal-title");
+    const descEl = modal.querySelector("#modal-photo-description");
+    const imageEl = modal.querySelector("#modal-photo-image");
+
+    document.querySelectorAll(".feeds-list__item").forEach(item => {
+      item.addEventListener("click", () => {
+        const title = item.dataset.title;
+        const description = item.dataset.description;
+        const imageUrl = item.dataset.image;
+
+        titleEl.textContent = title;
+        descEl.textContent = description;
+        imageEl.src = imageUrl;
+      });
+    });
+  });
+</script>

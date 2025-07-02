@@ -44,12 +44,36 @@
   <% if @param_user_id.to_i === current_user.id && @tab == 'photos' %>
     <%= link_to "Add Photo", new_user_photo_path(current_user), class: "profile-info__add-photo d-block" %>
   <% end %>
+
+  <% if @param_user_id.to_i === current_user.id && @tab == 'albums' %>
+    <%= link_to "Add Album", new_user_album_path(current_user), class: "profile-info__add-photo d-block" %>
+  <% end %>
   <div class="profile-list row g-4">
     <% @items.each do |item| %>
-      <div class="d-flex flex-column align-items-center justify-content-center col-12 col-md-6 col-lg-4 col-xl-3 gap-2">
-        <%= image_tag "#{item.image}", alt: "", class: "rounded" %>
-        <span><%= item.title %></span>
-      </div>
+      <% if @tab == 'photos' %>
+        <div class="d-flex flex-column align-items-center justify-content-center col-12 col-md-6 col-lg-4 col-xl-3 gap-2 profile-list__item">
+          <%= image_tag "#{item.image}", alt: "", class: "rounded" %>
+          <span><%= item.title %></span>
+          <%= link_to "EDIT", edit_photo_path(item), class: "profile-list__item--after profile-list__item--after-photos" %>
+          
+        </div>
+      <% elsif @tab == 'albums' %>
+        <div class="d-flex flex-column align-items-center justify-content-center col-12 col-md-6 col-lg-4 col-xl-3 gap-2 profile-list__item">
+          <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
+            <%= image_tag "#{item.photos[0].image}", alt: "" %>
+            <%= image_tag "#{item.photos[0].image}", alt: "" %>
+            <%= image_tag "#{item.photos[0].image}", alt: "" %>
+            <div class="profile-list__item--count">
+              <span class="fs-3 lh-1"><%= item.photos.length %></span>
+              PHOTOS
+            </div>
+          </div>
+          <span><%= item.title %></span>
+          <div class="profile-list__item--after profile-list__item--after-albums">EDIT</div>
+        </div>
+      <% elsif @tab == 'followings' %>
+      <% else %>
+      <% end %>
     <% end %>
   </div>
-</>
+</div>
