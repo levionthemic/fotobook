@@ -1,0 +1,7 @@
+<div class="col-2 sidebar">
+  <div class="sidebar-list">
+    <%= link_to "Manage Photos", '/admin/photos', class: ["sidebar-list__item", ('sidebar-list__item--active' if side_bar_pathname?('/admin/photos'))]  %>
+    <%= link_to "Manage Albums", "/admin/albums", class: ["sidebar-list__item", ('sidebar-list__item--active' if side_bar_pathname?('/admin/albums'))] %>
+    <%= link_to "Manage Users", "/admin/users", class: ["sidebar-list__item", ('sidebar-list__item--active' if side_bar_pathname?('/admin/users'))] %>
+  </div>
+</div>

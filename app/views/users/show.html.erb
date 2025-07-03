@@ -4,8 +4,8 @@
       <%= image_tag "#{@user.avatar}", alt: "Avatar", class: "" %>
     </div>
     <div class="profile-info__content">
-      <% if @param_user_id.to_i === current_user.id %>
-        <div class="profile-info__badge--me">Edit profile</div>
+      <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
+        <%= link_to "Edit profile", edit_user_path(@user), class: "profile-info__badge--me" %>
       <% else %>
         <div class="profile-info__badge">Following</div>
       <% end %>
@@ -41,26 +41,33 @@
       </div>
     </div>
   </div>
-  <% if @param_user_id.to_i === current_user.id && @tab == 'photos' %>
+  <% if user_signed_in? && @param_user_id.to_i === current_user.id && @tab == 'photos' %>
     <%= link_to "Add Photo", new_user_photo_path(current_user), class: "profile-info__add-photo d-block" %>
   <% end %>
-
-  <% if @param_user_id.to_i === current_user.id && @tab == 'albums' %>
+  <% if user_signed_in? && @param_user_id.to_i === current_user.id && @tab == 'albums' %>
     <%= link_to "Add Album", new_user_album_path(current_user), class: "profile-info__add-photo d-block" %>
   <% end %>
-  <div class="profile-list row g-4">
+  <div class="profile-list">
     <% @items.each do |item| %>
       <% if @tab == 'photos' %>
-        <div class="d-flex flex-column align-items-center justify-content-center col-12 col-md-6 col-lg-4 col-xl-3 gap-2 profile-list__item">
-          <%= image_tag "#{item.image}", alt: "", class: "rounded" %>
+        <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-list__item">
+          <div class="position-relative">
+            <%= image_tag "#{item.image}", alt: "", class: "rounded" %>
+            <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
+              <%= link_to "EDIT", edit_photo_path(item), class: "profile-list__item--after profile-list__item--after-photos" %>
+            <% end %>
+          </div>
           <span><%= item.title %></span>
-          <%= link_to "EDIT", edit_photo_path(item), class: "profile-list__item--after profile-list__item--after-photos" %>
-          
         </div>
       <% elsif @tab == 'albums' %>
-        <div class="d-flex flex-column align-items-center justify-content-center col-12 col-md-6 col-lg-4 col-xl-3 gap-2 profile-list__item">
+        <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-list__item">
           <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
-            <%= image_tag "#{item.photos[0].image}", alt: "" %>
+            <div class="position-relative first-img">
+              <%= image_tag "#{item.photos[0].image}", alt: "" %>
+              <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
+                <%= link_to "EDIT", edit_album_path(item), class: "profile-list__item--after profile-list__item--after-albums" %>
+              <% end %>
+            </div>
             <%= image_tag "#{item.photos[0].image}", alt: "" %>
             <%= image_tag "#{item.photos[0].image}", alt: "" %>
             <div class="profile-list__item--count">
@@ -69,10 +76,39 @@
             </div>
           </div>
           <span><%= item.title %></span>
-          <div class="profile-list__item--after profile-list__item--after-albums">EDIT</div>
         </div>
       <% elsif @tab == 'followings' %>
+        <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
+          <%= image_tag "#{item.avatar}", alt: "", class: "profile-followings__item--avatar"  %>
+          <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
+            <div class="d-flex flex-column align-items-center justify-content-center ">
+              <span class="fs-2 lh-1 fw-bold"><%= item.photos.length %></span>
+              <span>PHOTOS</span>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <span class="fs-2 lh-1 fw-bold"><%= item.albums.length %></span>
+              <span>ALBUMS</span>
+            </div>
+          </div>
+          <div class="profile-info__badge profile-info__badge--inactive"><span>unfollow</span></div>
+        </div>
       <% else %>
+        <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
+          <%= image_tag "#{item.avatar}", alt: "", class: "profile-followings__item--avatar"  %>
+          <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
+            <div class="d-flex flex-column align-items-center justify-content-center ">
+              <span class="fs-2 lh-1 fw-bold"><%= item.photos.length %></span>
+              <span>PHOTOS</span>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+              <span class="fs-2 lh-1 fw-bold"><%= item.albums.length %></span>
+              <span>ALBUMS</span>
+            </div>
+          </div>
+          <div class="profile-info__badge profile-info__badge--inactive"><span>unfollow</span></div>
+        </div>
       <% end %>
     <% end %>
   </div>

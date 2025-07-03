@@ -8,15 +8,35 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --primary-color: #3C5999;
+  --primary-color: #3c5999;
   --header-height: 42px;
   --sidebar-width: 14rem;
 
   --bs-primary: var(--primary-color);
-  --bs-link-color-rgb: 60,89,153;
+  --bs-link-color-rgb: 60, 89, 153;
+  --bs-link-color: var(--primary-color);
+
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--primary-color);
+  --bs-btn-border-color: var(--primary-color);
+  --bs-btn-hover-bg: var(--primary-color);
+  --bs-btn-hover-border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  filter: brightness(90%);
+}
+.active > .page-link {
+  --bs-pagination-active-bg: var(--primary-color);
+  --bs-pagination-active-border-color: var(--primary-color);
+}
+.text-primary {
+  --bs-primary-rgb: 60, 89, 153;
 }
 
 .btn-outline-primary {
@@ -33,17 +53,18 @@
 html {
   width: 100vw;
   min-height: 100vh;
-  padding: 0; 
+  padding: 0;
 }
 
 body {
   font-size: 15px;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-  min-height: 100vh ;
+  font-family: "Roboto", sans-serif;
+  min-height: 100vh;
 }
 
-a, a:visited {
+a,
+a:visited {
   text-decoration: none;
 }
 
@@ -51,7 +72,7 @@ p {
   margin: 0;
 }
 
- /*
+/*
  *= require partials
  *= require login-page
  */

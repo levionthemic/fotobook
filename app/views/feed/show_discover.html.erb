@@ -1,178 +1,108 @@
-<div class="guest-feeds">
-  <div class="guest-feeds-wrap">
-    <div
-      class="btn-group"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" checked />
-      <label class="btn btn-outline-primary" for="photo">PHOTO</label>
-      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" />
-      <label class="btn btn-outline-primary" for="album">ALBUM</label>
+<div class="feeds" >
+  <div class="feeds-wrap">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" <%= 'checked' if @tab == 'photos' %> />
+      <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary tab-label", data: { url: discover_path(tab: "photos") } %>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab == 'albums' %>/>
+      <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary tab-label", data: { url: discover_path(tab: "albums") } %>
     </div>
-    <div class="guest-feeds-list">
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
+    <div class="feeds-list">
+      <% @items.each do |item| %>
+        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= j item.description %>" data-image="<%= url_for(item.image) if !params[:tab] || params[:tab] == 'photos' %>">
+          <div class="feeds-list__item--image">
+            <% if !params[:tab] || params[:tab] == 'photos' %>
+              <%= image_tag "#{item.image}", alt: "" %>
+            <% else %>
+              <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+                <%= image_tag "#{item.photos[0].image}", alt: "" %>
+              </div>
+            <% end  %>
           </div>
-          <div class="guest-feeds-list__item--time">
+          <div class="feeds-list__item--content">
             <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
+              <div class="d-flex gap-2 align-items-center">
+                <div class="feeds-list__item--avatar">
+                  <%= image_tag "#{item.user.avatar}", alt: "Avatar", class: "" %>
+                </div>
+                <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
+              </div>
+              <p class="my-2"><b><%= item.title %></b></p>
+              <p class="feeds-list__item--desc">
+                <%= item.description %>
+              </p>
             </div>
-            <p>4:56 pm 01/04/2018</p>
+            <div class="feeds-list__item--time">
+              <div class="d-flex align-items-center gap-1" style="cursor: pointer">
+                <i class="fa-solid fa-heart heart-icon"></i>
+                <span>123</span>
+              </div>
+              <p><%= item.created_at.strftime("%-I:%M %P %d/%m/%Y") %></p>
+            </div>
           </div>
         </div>
+      <% end %>
+    </div>
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+          <a class="page-link" href="#" aria-current="page">2</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="viewFeed" tabindex="-1" aria-labelledby="viewFeedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="viewFeedLabel">
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
-      </div>
-      <div class="guest-feeds-list__item">
-        <div class="guest-feeds-list__item--image">
-          <%= image_tag "sample.jpg", alt: "" %>
-        </div>
-        <div class="guest-feeds-list__item--content">
-          <div class="">
-            <div class="d-flex gap-2 align-items-center">
-              <div class="guest-feeds-list__item--avatar">HN</div>
-              <span>Hieu Nguyen</span>
-            </div>
-            <p class="my-2"><b>Nam tempor posuere faucibus</b></p>
-            <p class="guest-feeds-list__item--desc">
-              Aliquam dictum nec massa ac consequat. Etiam dignissim
-              tincidunt tellus sed vestibulum. Sed vitae vestibulum purus.
-              Curabitur malesuada libero in nibh pretium, sed malesuada nisi
-              feugiat.
-            </p>
-          </div>
-          <div class="guest-feeds-list__item--time">
-            <div class="">
-              <i class="fa-solid fa-heart"></i>
-              <span>123</span>
-            </div>
-            <p>4:56 pm 01/04/2018</p>
-          </div>
-        </div>
+      <div class="modal-body">
+        <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <div id="modal-photo-description"></div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("turbo:load", () => {
+    document.querySelectorAll(".tab-label").forEach(label => {
+      label.addEventListener("click", e => {
+        e.preventDefault()
+        const url = e.currentTarget.dataset.url;
+        if (url) Turbo.visit(url);
+      });
+    });
+
+    const modal = document.getElementById("viewFeed");
+    const titleEl = modal.querySelector(".modal-title");
+    const descEl = modal.querySelector("#modal-photo-description");
+    const imageEl = modal.querySelector("#modal-photo-image");
+
+    document.querySelectorAll(".feeds-list__item").forEach(item => {
+      item.addEventListener("click", () => {
+        // Xoá backdrop cũ (nếu vì bug mà chưa xoá)
+        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+          if (index > 0)
+            el.remove()
+        });
+        const title = item.dataset.title;
+        const description = item.dataset.description;
+        const imageUrl = item.dataset.image;
+
+        titleEl.textContent = title;
+        descEl.textContent = description;
+        imageEl.src = imageUrl;
+      });
+    });
+  });
+</script>

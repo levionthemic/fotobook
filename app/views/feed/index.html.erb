@@ -2,14 +2,14 @@
   <div class="feeds-wrap">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" <%= 'checked' if @tab == 'photos' %> />
-      <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary", data: { turbo_action: "replace", url: root_path(tab: "photos") } %>
-      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab   == 'albums' %>/>
-      <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary", data: { turbo_action: "replace", url: root_path(tab: "albums") } %>
+      <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary tab-label", data: { url: root_path(tab: "photos") } %>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab == 'albums' %>/>
+      <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary tab-label", data: { url: root_path(tab: "albums") } %>
     </div>
     <div class="feeds-list">
       <% @items.each do |item| %>
-        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= j item.description %>" data-image="<%= url_for(item.image) if params[:tab] == 'photos' %>">
-          <div class="feeds-list__item--image">
+        <div class="feeds-list__item">
+          <div class="feeds-list__item--image" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= item.description %>" data-image="<%= url_for(item.image) if !params[:tab] || params[:tab] == 'photos' %>" data-images='<%= raw(item.photos.map(&:image).to_json) if params[:tab] == 'albums' %>'>
             <% if !params[:tab] || params[:tab] == 'photos' %>
               <%= image_tag "#{item.image}", alt: "" %>
             <% else %>
@@ -22,12 +22,12 @@
           </div>
           <div class="feeds-list__item--content">
             <div class="">
-              <div class="d-flex gap-2 align-items-center">
+              <%= link_to user_path(item.user), class: "feeds-list__item--profile" do %>
                 <div class="feeds-list__item--avatar">
                   <%= image_tag "#{item.user.avatar}", alt: "Avatar", class: "" %>
                 </div>
                 <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
-              </div>
+              <% end %>
               <p class="my-2"><b><%= item.title %></b></p>
               <p class="feeds-list__item--desc">
                 <%= item.description %>
@@ -44,6 +44,17 @@
         </div>
       <% end %>
     </div>
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+          <a class="page-link" href="#" aria-current="page">2</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
   </div>
 </div>
 <!-- Modal -->
@@ -56,18 +67,34 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <% if !params[:tab] || params[:tab] == 'photos' %>
+          <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <% else %>
+          <div id="carouselExample" class="carousel slide mb-3" style="display: none;">
+            <div class="carousel-inner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        <% end %>
         <div id="modal-photo-description"></div>
       </div>
     </div>
   </div>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("label[data-url]").forEach((label) => {
-      label.addEventListener("click", () => {
-        const url = label.dataset.url;
-        if (url) window.location.href = url;
+  document.addEventListener("turbo:load", () => {
+    // Tab label
+    document.querySelectorAll(".tab-label").forEach(label => {
+      label.addEventListener("click", e => {
+        e.preventDefault()
+        const url = e.currentTarget.dataset.url;
+        if (url) Turbo.visit(url);
       });
     });
 
@@ -76,15 +103,44 @@
     const descEl = modal.querySelector("#modal-photo-description");
     const imageEl = modal.querySelector("#modal-photo-image");
 
-    document.querySelectorAll(".feeds-list__item").forEach(item => {
+    const carouselEl = modal.querySelector("#carouselExample");
+    const carouselInner = carouselEl?.querySelector(".carousel-inner");
+
+    document.querySelectorAll(".feeds-list__item--image").forEach(item => {
       item.addEventListener("click", () => {
+        // Reset
+        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+          if (index > 0) el.remove();
+        });
+
         const title = item.dataset.title;
         const description = item.dataset.description;
-        const imageUrl = item.dataset.image;
+        const imageArray = item.dataset.images ? JSON.parse(item.dataset.images) : null;
 
         titleEl.textContent = title;
         descEl.textContent = description;
-        imageEl.src = imageUrl;
+
+        if (imageArray && imageArray.length > 0) {
+          // Ẩn single image
+          carouselEl.style.display = "block";
+
+          // Xoá cũ
+          carouselInner.innerHTML = "";
+
+          imageArray.forEach((url, index) => {
+            const div = document.createElement("div");
+            div.className = "carousel-item" + (index === 0 ? " active" : "");
+            div.innerHTML = `<img src="${url}" class="d-block w-100" alt="carousel image">`;
+            carouselInner.appendChild(div);
+          });
+
+        } else {
+          // Single image
+          imageEl.src = item.dataset.image;
+          imageEl.style.display = "block";
+          descEl.style.display = "block";
+          carouselEl.style.display = "none";
+        }
       });
     });
   });

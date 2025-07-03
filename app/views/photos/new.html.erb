@@ -16,8 +16,7 @@
       <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
     </div>
     <div class="mb-4">
-      <%= f.label :image, "Upload Photo", class: "form-label d-block" %>
-      <label class="border border-secondary border-dashed d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; cursor: pointer;">
+      <label class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2">
         <span class="fs-1 text-muted">+</span>
         <%= f.file_field :image, class: "d-none" %>
       </label>

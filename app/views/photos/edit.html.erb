@@ -1,5 +1,8 @@
 <div class="bg-white p-4 m-4" style="min-height: 90vh;">
-  <h3 class="mb-4 border-bottom pb-2">Edit Photo</h3>
+   <div class="d-flex align-items-center justify-content-between">
+    <h5 class="font-weight-bold lh-1 m-0">Edit photo</h5>
+    <%= link_to "Back", request.referer, class: "btn btn-primary" %>
+  </div>
   <%= form_with url: "/photos/#{@photo.id}/", method: :patch, local: true, html: { enctype: "multipart/form-data" } do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
@@ -17,13 +20,14 @@
     </div>
     <div class="mb-4">
       <%= f.label :image, "Upload Photo", class: "form-label d-block" %>
-      <label class="border border-secondary border-dashed d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; cursor: pointer;">
+      <label class="border border-secondary border-dashed d-flex align-items-center justify-content-center position-relative rounded overflow-hidden" style="width: 150px; height: 150px;">
         <% if @photo.image %>
           <%= image_tag "#{@photo.image}", alt: "", class: "w-100 h-100 object-fit-cover"%>
+          <i class="fa-solid fa-xmark close-icon"></i>
         <% else %>
           <span class="fs-1 text-muted">+</span>
+          <%= f.file_field :image, class: "d-none" %>
         <% end %>
-        <%= f.file_field :image, class: "d-none" %>
       </label>
     </div>
     <%= f.submit "Save", class: "btn btn-success" %>

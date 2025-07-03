@@ -29,6 +29,11 @@ Rails.application.routes.draw do
     end
   end
 
+  get "admin/photos", to: "photos#admin_show_photos"
+  get "admin/albums", to: "albums#admin_show_albums"
+  get "admin/users", to: "users#admin_show_users"
+  get "admin/users/:id", to: "users#admin_show_user_detail"
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

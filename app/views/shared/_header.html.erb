@@ -1,6 +1,10 @@
 <header class="header">
   <div class="header__logo-search">
-    <%= link_to "Fotobook", "/", class: "header__logo" %>
+    <% if user_signed_in? && current_user.role == 'admin' %>
+      <%= link_to "Fotobook Admin", "/admin/photos", class: "header__logo" %>
+    <% else %>
+      <%= link_to "Fotobook", "/", class: "header__logo" %>
+    <% end %>
     <form action="" class="header__search">
       <input type="text" placeholder="Select Photo / Album" class="form-control header__search-input"/>
     </form>

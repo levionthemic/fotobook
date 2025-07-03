@@ -1,0 +1,38 @@
+.admin-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.admin-photos__item {
+  width: 200px;
+  aspect-ratio: 1/1;
+  position: relative;
+}
+
+.admin-photos__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-photos__item--title {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  color: white;
+  padding: 3px 10px;
+}
+
+.admin-photos__item--title i {
+  width: 10%;
+  font-size: 1.3rem;
+}
+
+.admin-photos__item--title span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+}

@@ -1,5 +1,8 @@
 <div class="bg-white p-4 m-4" style="min-height: 90vh;">
-  <h5 class="font-weight-bold mb-4">Edit User Profile</h5>
+  <div class="d-flex align-items-center justify-content-between">
+    <h5 class="font-weight-bold lh-1 m-0">Edit User Profile</h5>
+    <%= link_to "Back", request.referer, class: "btn btn-primary" %>
+  </div>
   <hr>
   <div class="d-flex flex-column align-items-center mb-4">
     <%= image_tag @user.avatar ? url_for(@user.avatar) : "default-avatar.png", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
@@ -35,35 +38,16 @@
         <%= f.email_field :email, class: "form-control", placeholder: "someone@example.com" %>
       </div>
     </div>
-    <div class="row">
-      <div class="offset-5">
-        <%= f.submit "Save", class: "btn btn-success" %>
-      </div>
-    </div>
-  <% end %>
-  <!-- Password Form -->
-  <div class="row">
-    <div class="offset-5">
-      <h6 class="text-primary font-weight-bold mt-5">Password</h6>
-    </div>
-  </div>
-  <%= form_with model: @user, url: user_path(@user), method: :patch, local: true do |f| %>
-    <div class="form-group row align-items-center mb-2">
-      <label class="col-5 text-end fw-bold">Current Password</label>
+    <div class="form-group row align-items-center mb-4">
+      <label class="col-5 text-end fw-bold">Password</label>
       <div class="col-5">
-        <%= f.password_field :current_password, class: "form-control" %>
-      </div>
-    </div>
-    <div class="form-group row align-items-center mb-2">
-      <label class="col-5 text-end fw-bold">New Password</label>
-      <div class="col-5">
-        <%= f.password_field :new_password, class: "form-control" %>
+        <%= f.password_field :password, class: "form-control", value: "password" %>
       </div>
     </div>
     <div class="form-group row align-items-center mb-4">
-      <label class="col-5 text-end fw-bold">Password Confirmation</label>
+      <label class="col-5 text-end fw-bold">Active?</label>
       <div class="col-5">
-        <%= f.password_field :password_confirmation, class: "form-control" %>
+        <%= f.check_box :status, { class: "form-check-input", checked: @user.status == 'active'}, 'active', 'inactive'%>
       </div>
     </div>
     <div class="row">

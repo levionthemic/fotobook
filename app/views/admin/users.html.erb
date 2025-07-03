@@ -1,0 +1,27 @@
+<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Last login</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider table-borderless">
+      <% @users.each do |user| %>
+        <tr class="align-middle">
+          <td><%= user.first_name%></td>
+          <td><%= user.last_name%></td>
+          <td><%= user.email%></td>
+          <td><%= user.created_at.strftime("%-I:%M %P %d/%m/%Y")%></td>
+          <td>
+            <%= link_to "Edit", "/admin/users/#{user.id}", class:"btn btn-success" %>
+            <button class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
