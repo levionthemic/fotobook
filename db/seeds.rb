@@ -24,15 +24,19 @@ User.destroy_all
 # ======= Create Users =======
 puts "Creating users..."
 users = []
-5.times do |i|
-  users << User.create!(
+20.times do |i|
+  user = User.new(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     email: "user#{i+1}@fotobook.com",
     password: "password",
     confirmed_at: Time.current,
-    avatar: "https://picsum.photos/seed/photo#{i+1}/600/400"
   )
+
+  user.remote_avatar_url = "https://res.cloudinary.com/dnzytzmek/image/upload/v1751876735/1050-600x400_xofa4e.jpg"
+  user.save!
+
+  users << user
 end
 
 admin = User.create!(
@@ -43,19 +47,22 @@ admin = User.create!(
   role: :admin,
   confirmed_at: Time.current
 )
+
 users << admin
 
 # ======= Create Photos =======
 puts "Creating photos..."
 photos = []
 100.times do
-  photos << Photo.create!(
+  photo = Photo.new(
     user: users.sample,
     title: Faker::Lorem.sentence(word_count: 3),
     description: Faker::Lorem.paragraph(sentence_count: 2),
-    image: "https://picsum.photos/seed/photo#{rand(1000)}/600/400",
     sharing_mode: %i[public_mode private_mode].sample
   )
+  photos << photo
+  photo.remote_image_url = "https://res.cloudinary.com/dnzytzmek/image/upload/v1751876735/1050-600x400_xofa4e.jpg"
+  photo.save!
 end
 
 # ======= Create Albums =======

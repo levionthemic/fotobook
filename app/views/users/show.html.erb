@@ -1,7 +1,7 @@
 <div class="profile">
   <div class="profile-info">
     <div class="profile-info__avatar">
-      <%= image_tag "#{@user.avatar}", alt: "Avatar", class: "" %>
+      <%= image_tag "#{@user.avatar.url}", alt: "Avatar", class: "" %>
     </div>
     <div class="profile-info__content">
       <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
@@ -79,7 +79,7 @@
         </div>
       <% elsif @tab == 'followings' %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar}", alt: "", class: "profile-followings__item--avatar"  %>
+          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar"  %>
           <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">
@@ -95,7 +95,7 @@
         </div>
       <% else %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar}", alt: "", class: "profile-followings__item--avatar"  %>
+          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar"  %>
           <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">

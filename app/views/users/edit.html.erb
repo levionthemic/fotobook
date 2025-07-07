@@ -2,7 +2,7 @@
   <h5 class="font-weight-bold mb-4">Edit User Profile</h5>
   <hr>
   <div class="d-flex flex-column align-items-center mb-4">
-    <%= image_tag @user.avatar ? url_for(@user.avatar) : "default-avatar.png", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
+    <%= image_tag @user.avatar.present? ? @user.avatar.url : "default-avatar.png", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
     <%= form_with model: @user, url: user_path(@user), html: { multipart: true }, method: :patch, local: true do |f| %>
       <label class="btn rounded position-relative" style="background: rgba(255,255,255, 0.7); top: -50px; font-size: 13px;">
         <%= f.file_field :avatar, class: "form-control-file mt-2 d-none" %>

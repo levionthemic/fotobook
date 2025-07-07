@@ -1,6 +1,6 @@
 <div class="bg-white p-4 m-4" style="min-height: 90vh;">
   <h3 class="mb-4 border-bottom pb-2">New Photo</h3>
-  <%= form_with url: user_photos_path(@user_id), local: true, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with url: user_photos_path(current_user), method: :post, local: true, html: { enctype: "multipart/form-data" } do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>
@@ -17,10 +17,35 @@
     </div>
     <div class="mb-4">
       <label class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2">
+        <%= image_tag '', alt: '', id: 'image-preview' %>
         <span class="fs-1 text-muted">+</span>
-        <%= f.file_field :image, class: "d-none" %>
+        <%= f.file_field :image, class: "d-none", id: 'image-upload' %>
       </label>
     </div>
     <%= f.submit "Save", class: "btn btn-success" %>
   <% end %>
 </div>
+<script>
+  document.addEventListener("turbo:load", () => {
+    const inputUpload = document.querySelector('#image-upload')
+    const preview = document.querySelector('#image-preview')
+
+    if (inputUpload) {
+      inputUpload.addEventListener('change', () => {
+        const file = inputUpload.files[0]
+        if (file) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            preview.src = e.target.result
+            preview.style.display = 'block'
+          }
+  
+          reader.readAsDataURL(file)
+        } else {
+          preview.src = '#'
+          preview.style.display = 'none'
+        }
+      })
+    }
+  })
+</script>

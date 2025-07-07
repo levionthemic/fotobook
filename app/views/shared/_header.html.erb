@@ -13,7 +13,7 @@
     <div class="header__user">
       <%= link_to user_path(current_user, tab: 'photos'), class: "header__user--info" do %>
         <div class="header__user--avatar">
-          <%= image_tag "#{current_user.avatar}", alt: "Avatar", class: "" %>
+          <%= image_tag "#{current_user.avatar.url}", alt: "Avatar", class: "" %>
         </div>
         <div class="text-white"><%= current_user.first_name %></div>
       <% end %>

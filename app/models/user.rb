@@ -2,6 +2,8 @@ class User < ApplicationRecord
   # Devise modules
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
+  mount_uploader :avatar, AvatarUploader
+
   enum :role, { guest: 0, user: 1, admin: 2 }
   enum :status, { active: 0, inactive: 1 }
 

@@ -24,7 +24,7 @@
             <div class="">
               <div class="d-flex gap-2 align-items-center">
                 <div class="feeds-list__item--avatar">
-                  <%= image_tag "#{item.user.avatar}", alt: "Avatar", class: "" %>
+                  <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
                 </div>
                 <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
               </div>

@@ -24,17 +24,25 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
-    @photo = Photo.new(photo_params)
-
-    respond_to do |format|
-      if @photo.save
-        format.html { redirect_to @photo, notice: "Photo was successfully created." }
-        format.json { render :show, status: :created, location: @photo }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @photo.errors, status: :unprocessable_entity }
-      end
+    @photo = Photo.new(title: params[:title], description: params[:description], sharing_mode: params[:sharing_mode], image: params[:image], user_id: current_user.id)
+    if @photo.save
+    puts "✅ Save thành công"
+    puts "URL ảnh: #{@photo.image.url}"
+    redirect_to user_path(current_user.id), notice: "Create photo successfully!"
+    else
+    puts "❌ Save lỗi: #{@photo.errors.full_messages}"
+    render :new, status: :unprocessable_entity
     end
+
+    # respond_to do |format|
+    #   if @photo.save
+    #     format.html { redirect_to @photo, notice: "Photo was successfully created." }
+    #     format.json { render :show, status: :created, location: @photo }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @photo.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /photos/1 or /photos/1.json
@@ -74,6 +82,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :title, :content ])
+      params.expect(photo: [ :title, :description, :sharing_mode, :image ])
     end
 end
