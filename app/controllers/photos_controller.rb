@@ -26,45 +26,40 @@ class PhotosController < ApplicationController
   def create
     @photo = Photo.new(title: params[:title], description: params[:description], sharing_mode: params[:sharing_mode], image: params[:image], user_id: current_user.id)
     if @photo.save
-    puts "✅ Save thành công"
-    puts "URL ảnh: #{@photo.image.url}"
-    redirect_to user_path(current_user.id), notice: "Create photo successfully!"
+      puts "✅ Save thành công"
+      puts "URL ảnh: #{@photo.image.url}"
+      redirect_to user_path(current_user.id), notice: "Create photo successfully!"
     else
-    puts "❌ Save lỗi: #{@photo.errors.full_messages}"
-    render :new, status: :unprocessable_entity
+      puts "❌ Save lỗi: #{@photo.errors.full_messages}"
+      render :new, status: :unprocessable_entity
     end
-
-    # respond_to do |format|
-    #   if @photo.save
-    #     format.html { redirect_to @photo, notice: "Photo was successfully created." }
-    #     format.json { render :show, status: :created, location: @photo }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @photo.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /photos/1 or /photos/1.json
   def update
-    respond_to do |format|
-      if @photo.update(photo_params)
-        format.html { redirect_to @photo, notice: "Photo was successfully updated." }
-        format.json { render :show, status: :ok, location: @photo }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @photo.errors, status: :unprocessable_entity }
-      end
+    @photo = Photo.find(params[:id])
+    permitted = {
+      title: params[:title],
+      description: params[:description],
+      sharing_mode: params[:sharing_mode]
+    }
+
+    permitted[:image] = params[:image] if params[:image].present?
+
+    if @photo.update(permitted)
+      redirect_to user_path(current_user.id), notice: "Edit photo successfully!"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /photos/1 or /photos/1.json
   def destroy
-    @photo.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
-      format.json { head :no_content }
+    @photo = Photo.find(params[:id])
+    if @photo.destroy
+      redirect_to user_path(current_user.id), notice: "Delete photo successfully!"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -75,13 +70,14 @@ class PhotosController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_photo
-      @photo = Photo.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def photo_params
-      params.expect(photo: [ :title, :description, :sharing_mode, :image ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_photo
+    @photo = Photo.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def photo_params
+    params.expect(photo: [:title, :description, :sharing_mode, :image])
+  end
 end

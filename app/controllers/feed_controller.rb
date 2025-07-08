@@ -1,7 +1,7 @@
 class FeedController < ApplicationController
   def index
     @tab = params[:tab]
-    if !params[:tab]
+    unless params[:tab]
       @tab = "photos"
     end
 
@@ -13,8 +13,8 @@ class FeedController < ApplicationController
   end
 
   def show_discover
-     @tab = params[:tab]
-    if !params[:tab]
+    @tab = params[:tab]
+    unless params[:tab]
       @tab = "photos"
     end
 

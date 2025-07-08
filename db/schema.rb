@@ -11,9 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
   create_table "album_photos", force: :cascade do |t|
     t.bigint "album_id", null: false
     t.bigint "photo_id", null: false
@@ -83,7 +80,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
   create_table "users", force: :cascade do |t|
     t.string "first_name", limit: 25, null: false
     t.string "last_name", limit: 25, null: false
-    t.string "email", limit: 255, null: false
+    t.string "email", null: false
     t.string "encrypted_password", default: "", null: false
     t.integer "role", default: 1, null: false
     t.integer "status", default: 0, null: false

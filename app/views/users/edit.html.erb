@@ -2,12 +2,16 @@
   <h5 class="font-weight-bold mb-4">Edit User Profile</h5>
   <hr>
   <div class="d-flex flex-column align-items-center mb-4">
-    <%= image_tag @user.avatar.present? ? @user.avatar.url : "default-avatar.png", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
+    <%= image_tag @user.avatar.present? ? @user.avatar.url : "default-avatar.png", class: "rounded", style: "width:
+    120px; height: 120px; object-fit: cover;", id: 'image-preview' %>
     <%= form_with model: @user, url: user_path(@user), html: { multipart: true }, method: :patch, local: true do |f| %>
       <label class="btn rounded position-relative" style="background: rgba(255,255,255, 0.7); top: -50px; font-size: 13px;">
-        <%= f.file_field :avatar, class: "form-control-file mt-2 d-none" %>
+        <%= f.file_field :avatar, class: "form-control-file mt-2 d-none", id: 'avatar-upload' %>
         <span>CHANGE</span>
       </label>
+      <%= f.submit "Save", id: 'avatar-submit', class: "btn btn-success d-none rounded position-relative",
+                   style:
+                     "top: -50px;" %>
     <% end %>
   </div>
   <!-- Basic Info Form -->
@@ -17,22 +21,52 @@
     </div>
   </div>
   <%= form_with model: @user, url: user_path(@user), method: :patch, local: true do |f| %>
-    <div class="form-group row align-items-center mb-2">
+    <div class="form-group row align-items-center <%= 'mb-2' unless @user.errors[:first_name].any? %>">
       <label class="col-5 text-end fw-bold" for="user_first_name">First Name</label>
       <div class="col-5">
-        <%= f.text_field :first_name, class: "form-control", placeholder: "First Name" %>
+        <%= f.text_field :first_name, class: "form-control #{'is-invalid' if @user.errors[:first_name].any?}",
+                         placeholder: "First Name" %>
       </div>
     </div>
-    <div class="form-group row align-items-center mb-2">
+    <div class="row">
+      <div class="offset-5">
+        <% @user.errors[:first_name].each do |error| %>
+          <div class="invalid-feedback d-block mb-2">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="form-group row align-items-center <%= 'mb-2' unless @user.errors[:last_name].any? %>">
       <label class="col-5 text-end fw-bold">Last Name</label>
       <div class="col-5">
-        <%= f.text_field :last_name, class: "form-control", placeholder: "Last Name" %>
+        <%= f.text_field :last_name, class: "form-control #{'is-invalid' if @user.errors[:last_name].any?}", placeholder:
+          "Last Name" %>
       </div>
     </div>
-    <div class="form-group row align-items-center mb-4">
+    <div class="row">
+      <div class="offset-5">
+        <% @user.errors[:last_name].each do |error| %>
+          <div class="invalid-feedback d-block mb-2">
+            <%= error %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="form-group row align-items-center <%= 'mb-4' unless @user.errors[:email].any? %>">
       <label class="col-5 text-end fw-bold">Email</label>
       <div class="col-5">
-        <%= f.email_field :email, class: "form-control", placeholder: "someone@example.com" %>
+        <%= f.email_field :email, class: "form-control #{'is-invalid' if @user.errors[:email].any?}", placeholder:
+          "someone@example.com" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="offset-5">
+        <% @user.errors[:email].each do |error| %>
+          <div class="invalid-feedback d-block mb-4">
+            <%= error %>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="row">
@@ -73,3 +107,29 @@
     </div>
   <% end %>
 </div>
+
+<script>
+    document.addEventListener('turbo:load', () => {
+        const inputUpload = document.querySelector('#avatar-upload')
+        const avatarSubmit = document.querySelector('#avatar-submit')
+        const imagePreview = document.querySelector('#image-preview')
+        if (inputUpload) {
+            inputUpload.addEventListener('change', (e) => {
+                const file = inputUpload.files[0]
+                if (file) {
+                    const reader = new FileReader()
+                    reader.onload = (e) => {
+                        avatarSubmit.classList.remove('d-none')
+                        inputUpload.parentElement.classList.add('d-none')
+
+                        imagePreview.src = e.target.result
+                    }
+
+                    reader.readAsDataURL(file)
+                } else {
+                    avatarSubmit.classList.add('d-none')
+                }
+            })
+        }
+    })
+</script>
