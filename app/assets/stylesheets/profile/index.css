@@ -166,6 +166,18 @@
   bottom: 5px;
 }
 
+.profile-list__item--lock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 6;
+
+  background: white;
+  padding: 5px;
+  border-radius: 100%;
+  font-size: .8rem;
+}
+
 .profile-list__item div img {
   width: 200px;
   height: 200px;

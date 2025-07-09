@@ -27,7 +27,7 @@
     </div>
     <div class="mb-3 col-md-4">
       <%= f.label :sharing_mode, "Sharing mode", class: "form-label" %>
-      <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
+      <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, { selected: @photo.sharing_mode }, class: "form-select" %>
     </div>
     <div class="mb-4">
       <%= f.label :image, "Upload Photo", class: "form-label d-block" %>
@@ -69,15 +69,15 @@
         </div>
       </div>
     </div>
-  <% end%>
+  <% end %>
 </div>
 
 <style>
-  .delete-button {
-      position: relative;
-      top: -38px;
-      left: 120px;
-  }
+    .delete-button {
+        position: relative;
+        top: -38px;
+        left: 120px;
+    }
 </style>
 
 <script>
