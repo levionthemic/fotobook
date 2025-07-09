@@ -3,6 +3,21 @@ class UsersController < ApplicationController
     @param_user_id = params[:id]
     @user = User.find(params[:id])
     @tab = params[:tab] || "photos"
+    @items = []
+
+    if current_user.id != @param_user_id.to_i
+      case @tab
+      when "photos"
+        @items = @user.photos.filter { |e| e.sharing_mode == "public_mode" }
+      when "albums"
+        @items = @user.albums.filter { |e| e.sharing_mode == "public_mode" }
+      when "followers"
+        @items = @user.followers
+      when "followings"
+        @items = @user.followings
+      end
+      return
+    end
 
     case @tab
     when "photos"
@@ -48,14 +63,14 @@ class UsersController < ApplicationController
   def albums
     @user = User.find(params[:id])
     @items = @user.albums
-     @tab = "albums"
+    @tab = "albums"
     render "users/show"
   end
 
   def followers
     @user = User.find(params[:id])
     @items = @user.followers
-     @tab = "followers"
+    @tab = "followers"
     render "users/show"
   end
 

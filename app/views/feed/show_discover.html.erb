@@ -8,7 +8,9 @@
     </div>
     <div class="feeds-list">
       <% @items.each do |item| %>
-        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= j item.description %>" data-image="<%= url_for(item.image) if !params[:tab] || params[:tab] == 'photos' %>">
+        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title
+        %>" data-description="<%= item.description %>" data-image="<%= item.image.url if !params[:tab] ||
+                                                                                         params[:tab] == 'photos' %>">
           <div class="feeds-list__item--image">
             <% if !params[:tab] || params[:tab] == 'photos' %>
               <%= image_tag "#{item.image}", alt: "" %>

@@ -1,9 +1,9 @@
-<div class="feeds" >
+<div class="feeds">
   <div class="feeds-wrap">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" <%= 'checked' if @tab == 'photos' %> />
       <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary tab-label", data: { url: root_path(tab: "photos") } %>
-      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab == 'albums' %>/>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%= 'checked' if @tab == 'albums' %>/>
       <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary tab-label", data: { url: root_path(tab: "albums") } %>
     </div>
     <div class="feeds-list">
@@ -18,7 +18,7 @@
                 <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
                 <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
               </div>
-            <% end  %>
+            <% end %>
           </div>
           <div class="feeds-list__item--content">
             <div class="">
@@ -88,60 +88,60 @@
   </div>
 </div>
 <script>
-  document.addEventListener("turbo:load", () => {
-    // Tab label
-    document.querySelectorAll(".tab-label").forEach(label => {
-      label.addEventListener("click", e => {
-        e.preventDefault()
-        const url = e.currentTarget.dataset.url;
-        if (url) Turbo.visit(url);
-      });
-    });
-
-    const modal = document.getElementById("viewFeed");
-    const titleEl = modal.querySelector(".modal-title");
-    const descEl = modal.querySelector("#modal-photo-description");
-    const imageEl = modal.querySelector("#modal-photo-image");
-
-    const carouselEl = modal.querySelector("#carouselExample");
-    const carouselInner = carouselEl?.querySelector(".carousel-inner");
-
-    document.querySelectorAll(".feeds-list__item--image").forEach(item => {
-      item.addEventListener("click", () => {
-        // Reset
-        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
-          if (index > 0) el.remove();
+    document.addEventListener("turbo:load", () => {
+        // Tab label
+        document.querySelectorAll(".tab-label").forEach(label => {
+            label.addEventListener("click", e => {
+                e.preventDefault()
+                const url = e.currentTarget.dataset.url;
+                if (url) Turbo.visit(url);
+            });
         });
 
-        const title = item.dataset.title;
-        const description = item.dataset.description;
-        const imageArray = item.dataset.images ? JSON.parse(item.dataset.images) : null;
+        const modal = document.getElementById("viewFeed");
+        const titleEl = modal.querySelector(".modal-title");
+        const descEl = modal.querySelector("#modal-photo-description");
+        const imageEl = modal.querySelector("#modal-photo-image");
 
-        titleEl.textContent = title;
-        descEl.textContent = description;
+        const carouselEl = modal.querySelector("#carouselExample");
+        const carouselInner = carouselEl?.querySelector(".carousel-inner");
 
-        if (imageArray && imageArray.length > 0) {
-          // Ẩn single image
-          carouselEl.style.display = "block";
+        document.querySelectorAll(".feeds-list__item--image").forEach(item => {
+            item.addEventListener("click", () => {
+                // Reset
+                document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+                    if (index > 0) el.remove();
+                });
 
-          // Xoá cũ
-          carouselInner.innerHTML = "";
+                const title = item.dataset.title;
+                const description = item.dataset.description;
+                const imageArray = item.dataset.images ? JSON.parse(item.dataset.images) : null;
 
-          imageArray.forEach((url, index) => {
-            const div = document.createElement("div");
-            div.className = "carousel-item" + (index === 0 ? " active" : "");
-            div.innerHTML = `<img src="${url}" class="d-block w-100" alt="carousel image">`;
-            carouselInner.appendChild(div);
-          });
+                titleEl.textContent = title;
+                descEl.textContent = description;
 
-        } else {
-          // Single image
-          imageEl.src = item.dataset.image;
-          imageEl.style.display = "block";
-          descEl.style.display = "block";
-          carouselEl.style.display = "none";
-        }
-      });
+                if (imageArray && imageArray.length > 0) {
+                    // Ẩn single image
+                    carouselEl.style.display = "block";
+
+                    // Xoá cũ
+                    carouselInner.innerHTML = "";
+
+                    imageArray.forEach((url, index) => {
+                        const div = document.createElement("div");
+                        div.className = "carousel-item" + (index === 0 ? " active" : "");
+                        div.innerHTML = `<img src="${url}" class="d-block w-100" alt="carousel image">`;
+                        carouselInner.appendChild(div);
+                    });
+
+                } else {
+                    // Single image
+                    imageEl.src = item.dataset.image;
+                    imageEl.style.display = "block";
+                    descEl.style.display = "block";
+                    carouselEl.style.display = "none";
+                }
+            });
+        });
     });
-  });
 </script>

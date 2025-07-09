@@ -13,14 +13,22 @@
       <div class="profile-info__tags">
         <%= link_to user_path(@user, tab: 'photos'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'photos')] do %>
           <span class="fs-4">
-            <%= @user.photos.length %>
+            <% if current_user.id == @param_user_id.to_i %>
+              <%= @user.photos.length %>
+            <% else %>
+              <%= @user.photos.filter { |e| e.sharing_mode == "public_mode" }.length %>
+            <% end %>
           </span>
           <span>PHOTOS</span>
         <% end %>
         <div class="profile-info__tags--divider"></div>
         <%= link_to user_path(@user, tab: 'albums'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'albums')] do %>
           <span class="fs-4">
-            <%= @user.albums.length %>
+            <% if current_user.id == @param_user_id.to_i %>
+              <%= @user.albums.length %>
+            <% else %>
+              <%= @user.albums.filter { |e| e.sharing_mode == "public_mode" }.length %>
+            <% end %>
           </span>
           <span>ALBUMS</span>
         <% end %>
@@ -56,6 +64,9 @@
             <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
               <%= link_to "EDIT", edit_photo_path(item), class: "profile-list__item--after profile-list__item--after-photos" %>
             <% end %>
+            <% if item.sharing_mode == "private_mode" %>
+              <i class="fa-solid fa-lock profile-list__item--lock"></i>
+            <% end %>
           </div>
           <span><%= item.title %></span>
         </div>
@@ -79,7 +90,7 @@
         </div>
       <% elsif @tab == 'followings' %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar"  %>
+          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
           <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">
@@ -91,11 +102,15 @@
               <span>ALBUMS</span>
             </div>
           </div>
-          <div class="profile-info__badge profile-info__badge--inactive"><span>unfollow</span></div>
+          <%= form_with url: user_following_path(current_user.id, item.id), method: :delete, local: true do |f| %>
+            <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive" do %>
+              <span>unfollow</span>
+            <% end %>
+          <% end %>
         </div>
       <% else %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar"  %>
+          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
           <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">
@@ -107,7 +122,16 @@
               <span>ALBUMS</span>
             </div>
           </div>
-          <div class="profile-info__badge profile-info__badge--inactive"><span>unfollow</span></div>
+          <% if following?(item.id) %>
+            <div class="profile-info__badge"><span>following</span></div>
+          <% else %>
+            <%= form_with url: user_followers_path(current_user), local: true do |f| %>
+              <%= hidden_field_tag :following_id, item.id %>
+              <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive" do %>
+                <span>follow</span>
+              <% end %>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     <% end %>

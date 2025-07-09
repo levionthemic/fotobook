@@ -5,11 +5,21 @@ class FeedController < ApplicationController
       @tab = "photos"
     end
 
+    @items = []
+
     if @tab == "photos"
-      @items = Photo.where(sharing_mode: "public_mode")
+      current_user.followings.each do |following|
+        following.photos.each do |photo|
+          if photo.sharing_mode == "public_mode"
+            @items << photo
+          end
+        end
+      end
     else
       @items = Album.where(sharing_mode: "public_mode")
     end
+
+    @items.sort! { |a, b| b.created_at <=> a.created_at }
   end
 
   def show_discover
@@ -17,9 +27,10 @@ class FeedController < ApplicationController
     unless params[:tab]
       @tab = "photos"
     end
+    @items = []
 
     if @tab == "photos"
-      @items = Photo.all.limit(10)
+      @items = Photo.where(sharing_mode: "public_mode").order(created_at: :desc)
     else
       @items = Album.all.limit(10)
     end

@@ -7,25 +7,23 @@ Rails.application.routes.draw do
     sign_up: "signup"
   }
 
-
-  # get "login", to: "auth#login"
-  # post "login", to: "auth#loginPost"
-  # get "signup", to: "auth#signup"
-  # post "signup", to: "auth#signupPost"
-  # delete "/logout", to: "auth#logout", as: :logout
-
   get "discover", to: "feed#show_discover"
   # get "profile", to: "profile#index"
 
-  resources :users, only: [ :show, :edit, :update, :destroy ] do
-    resources :photos, except: [ :index ], shallow: true
-    resources :albums, except: [ :index ], shallow: true
+  resources :users, only: [:show, :edit, :update, :destroy] do
+    resources :photos, except: [:index], shallow: true
+    resources :albums, except: [:index], shallow: true
 
+    resources :followers, only: [:create, :destroy], controller: "follows"
+    resources :followings, only: [:create, :destroy], controller: "follows"
     member do
       get :photos
       get :albums
       get :followers
       get :followings
+
+      patch :follower
+      patch :following
     end
   end
 
@@ -33,7 +31,6 @@ Rails.application.routes.draw do
   get "admin/albums", to: "albums#admin_show_albums"
   get "admin/users", to: "users#admin_show_users"
   get "admin/users/:id", to: "users#admin_show_user_detail"
-
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
