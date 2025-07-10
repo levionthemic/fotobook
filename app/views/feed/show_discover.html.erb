@@ -1,17 +1,17 @@
-<div class="feeds" >
+<div class="feeds">
   <div class="feeds-wrap">
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
       <input type="radio" class="btn-check" name="typepage" id="photo" autocomplete="off" <%= 'checked' if @tab == 'photos' %> />
       <%= label_tag "photo", "PHOTO", class: "btn btn-outline-primary tab-label", data: { url: discover_path(tab: "photos") } %>
-      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%='checked' if @tab == 'albums' %>/>
+      <input type="radio" class="btn-check" name="typepage" id="album" autocomplete="off" <%= 'checked' if @tab == 'albums' %>/>
       <%= label_tag "album", "ALBUM", class: "btn btn-outline-primary tab-label", data: { url: discover_path(tab: "albums") } %>
     </div>
     <div class="feeds-list">
       <% @items.each do |item| %>
-        <div class="feeds-list__item" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title
-        %>" data-description="<%= item.description %>" data-image="<%= item.image.url if !params[:tab] ||
-                                                                                         params[:tab] == 'photos' %>">
-          <div class="feeds-list__item--image">
+        <div class="feeds-list__item">
+          <div class="feeds-list__item--image" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title
+          %>" data-description="<%= item.description %>" data-image="<%= item.image.url if !params[:tab] ||
+                                                                                           params[:tab] == 'photos' %>">
             <% if !params[:tab] || params[:tab] == 'photos' %>
               <%= image_tag "#{item.image}", alt: "" %>
             <% else %>
@@ -20,15 +20,29 @@
                 <%= image_tag "#{item.photos[0].image}", alt: "" %>
                 <%= image_tag "#{item.photos[0].image}", alt: "" %>
               </div>
-            <% end  %>
+            <% end %>
           </div>
           <div class="feeds-list__item--content">
             <div class="">
-              <div class="d-flex gap-2 align-items-center">
-                <div class="feeds-list__item--avatar">
-                  <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
+              <div class="d-flex gap-2 align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-1 flex-nowrap">
+                  <%= link_to user_path(item.user), class: "feeds-list__item--profile" do %>
+                    <div class="feeds-list__item--avatar">
+                      <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
+                    </div>
+                    <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
+                  <% end %>
                 </div>
-                <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
+                <% if following?(item.user_id) %>
+                  <div class="profile-info__badge mb-0"><span>following</span></div>
+                <% else %>
+                  <%= form_with url: user_followers_path(current_user), local: true do |f| %>
+                    <%= hidden_field_tag :following_id, item.user_id %>
+                    <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive mb-0" do %>
+                      <span>follow</span>
+                    <% end %>
+                  <% end %>
+                <% end %>
               </div>
               <p class="my-2"><b><%= item.title %></b></p>
               <p class="feeds-list__item--desc">
@@ -36,10 +50,32 @@
               </p>
             </div>
             <div class="feeds-list__item--time">
-              <div class="d-flex align-items-center gap-1" style="cursor: pointer">
-                <i class="fa-solid fa-heart heart-icon"></i>
-                <span>123</span>
-              </div>
+              <% if is_liked?(current_user.id, item.id) %>
+                <%= turbo_frame_tag dom_id(item, :like_section) do %>
+                  <% like = current_user.likes.find_by(likeable: item) %>
+                  <div class="d-flex align-items-center gap-1">
+                    <%= form_with url: like_path(like), method: :delete, data: { turbo: true } do %>
+                      <button type="submit" class="btn p-0 border-0 bg-transparent">
+                        <i class="fa-solid fa-heart text-danger heart-icon"></i>
+                      </button>
+                    <% end %>
+                    <span><%= count_likes(item.id) %></span>
+                  </div>
+                <% end %>
+              <% else %>
+                <%= turbo_frame_tag dom_id(item, :like_section) do %>
+                  <div class="d-flex align-items-center gap-1">
+                    <%= form_with url: likes_path, method: :post, data: { turbo: true } do |f| %>
+                      <%= hidden_field_tag :likeable_type, "Photo" %>
+                      <%= hidden_field_tag :likeable_id, item.id %>
+                      <button type="submit" class="btn p-0 border-0 bg-transparent">
+                        <i class="fa-solid fa-heart heart-icon"></i>
+                      </button>
+                    <% end %>
+                    <span><%= count_likes(item.id) %></span>
+                  </div>
+                <% end %>
+              <% end %>
               <p><%= item.created_at.strftime("%-I:%M %P %d/%m/%Y") %></p>
             </div>
           </div>
@@ -59,7 +95,7 @@
     </nav>
   </div>
 </div>
-<!-- Modal -->
+
 <div class="modal fade" id="viewFeed" tabindex="-1" aria-labelledby="viewFeedLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -69,42 +105,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <% if !params[:tab] || params[:tab] == 'photos' %>
+          <img src="" alt="" id="modal-photo-image" class="w-100 h-auto mb-3">
+        <% else %>
+          <div id="carouselExample" class="carousel slide mb-3" style="display: none;">
+            <div class="carousel-inner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        <% end %>
         <div id="modal-photo-description"></div>
       </div>
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener("turbo:load", () => {
-    document.querySelectorAll(".tab-label").forEach(label => {
-      label.addEventListener("click", e => {
-        e.preventDefault()
-        const url = e.currentTarget.dataset.url;
-        if (url) Turbo.visit(url);
-      });
-    });
 
-    const modal = document.getElementById("viewFeed");
-    const titleEl = modal.querySelector(".modal-title");
-    const descEl = modal.querySelector("#modal-photo-description");
-    const imageEl = modal.querySelector("#modal-photo-image");
-
-    document.querySelectorAll(".feeds-list__item").forEach(item => {
-      item.addEventListener("click", () => {
-        // Xoá backdrop cũ (nếu vì bug mà chưa xoá)
-        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
-          if (index > 0)
-            el.remove()
-        });
-        const title = item.dataset.title;
-        const description = item.dataset.description;
-        const imageUrl = item.dataset.image;
-
-        titleEl.textContent = title;
-        descEl.textContent = description;
-        imageEl.src = imageUrl;
-      });
-    });
-  });
-</script>

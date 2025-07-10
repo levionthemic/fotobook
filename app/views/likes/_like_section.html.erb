@@ -1,0 +1,23 @@
+<%= turbo_frame_tag dom_id(item, :like_section) do %>
+  <div class="d-flex align-items-center gap-1">
+    <% if is_liked?(current_user.id, item.id) %>
+      <% like = current_user.likes.find_by(likeable: item) %>
+
+      <%= form_with url: like_path(like), method: :delete, data: { turbo: true } do %>
+        <button type="submit" class="btn p-0 border-0 bg-transparent">
+          <i class="fa-solid fa-heart text-danger heart-icon"></i>
+        </button>
+      <% end %>
+    <% else %>
+      <%= form_with url: likes_path, method: :post, data: { turbo: true } do %>
+        <%= hidden_field_tag :likeable_type, item.class.name %>
+        <%= hidden_field_tag :likeable_id, item.id %>
+
+        <button type="submit" class="btn p-0 border-0 bg-transparent">
+          <i class="fa-solid fa-heart heart-icon"></i>
+        </button>
+      <% end %>
+    <% end %>
+    <span><%= count_likes(item.id) %></span>
+  </div>
+<% end %>

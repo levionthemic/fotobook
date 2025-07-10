@@ -6,7 +6,7 @@ class FollowsController < ApplicationController
     following_id = params[:following_id]
     follow = Follow.new(follower_id: user_id, following_id: following_id)
     if follow.save
-      redirect_to user_path(current_user, tab: "followers"), notice: "Follow successful!"
+      redirect_to request.referer, notice: "Follow successful!"
     else
       render user_path(user_id, tab: "followers"), status: :unprocessable_entity
     end

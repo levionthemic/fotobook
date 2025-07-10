@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :likes, only: [:create, :destroy]
+
   get "admin/photos", to: "photos#admin_show_photos"
   get "admin/albums", to: "albums#admin_show_albums"
   get "admin/users", to: "users#admin_show_users"
