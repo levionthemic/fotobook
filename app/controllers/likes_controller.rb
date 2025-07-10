@@ -1,10 +1,24 @@
 # frozen_string_literal: true
 
 class LikesController < ApplicationController
-  include ActionView::RecordIdentifier  # 👈 thêm dòng này
+  include ActionView::RecordIdentifier
   def create
     @likeable = params[:likeable_type].constantize.find(params[:likeable_id])
     current_user.likes.create!(likeable: @likeable)
+
+    photo_ids = Photo.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc).pluck(:id)
+
+    @likes_by_user = Like.where(
+      user_id: current_user.id,
+      likeable_type: "Photo",
+      likeable_id: photo_ids
+    ).pluck(:id, :likeable_id).to_set
+
+    @like_counts = Like.where(
+      likeable_type: "Photo",
+      likeable_id: photo_ids
+    ).group(:likeable_id).count
+
     render_like_section
   end
 
@@ -12,6 +26,20 @@ class LikesController < ApplicationController
     @like = current_user.likes.find(params[:id])
     @likeable = @like.likeable
     @like.destroy
+
+    photo_ids = Photo.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc).pluck(:id)
+
+    @likes_by_user = Like.where(
+      user_id: current_user.id,
+      likeable_type: "Photo",
+      likeable_id: photo_ids
+    ).pluck(:id, :likeable_id).to_set
+
+    @like_counts = Like.where(
+      likeable_type: "Photo",
+      likeable_id: photo_ids
+    ).group(:likeable_id).count
+
     render_like_section
   end
 
