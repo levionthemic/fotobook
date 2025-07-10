@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     @tab = params[:tab] || "photos"
     @items = []
 
-    if current_user.id != @param_user_id.to_i
+    if user_signed_in? && current_user.id != @param_user_id.to_i
       case @tab
       when "photos"
         @items = @user.photos.filter { |e| e.sharing_mode == "public_mode" }

@@ -18,10 +18,10 @@ class FeedController < ApplicationController
         end
         @items.sort! { |a, b| b.created_at <=> a.created_at }
       else
-        @items = Photo.where(sharing_mode: "public_mode")
+        @items = Photo.where(sharing_mode: "public_mode").order(created_at: :desc)
       end
     else
-      @items = Album.where(sharing_mode: "public_mode")
+      @items = Album.where(sharing_mode: "public_mode").order(created_at: :desc)
     end
 
   end

@@ -34,31 +34,35 @@
               </p>
             </div>
             <div class="feeds-list__item--time">
-              <% if is_liked?(current_user.id, item.id) %>
-                <%= turbo_frame_tag dom_id(item, :like_section) do %>
-                  <% like = current_user.likes.find_by(likeable: item) %>
-                  <div class="d-flex align-items-center gap-1">
-                    <%= form_with url: like_path(like), method: :delete, data: { turbo: true } do %>
-                      <button type="submit" class="btn p-0 border-0 bg-transparent">
-                        <i class="fa-solid fa-heart text-danger heart-icon"></i>
-                      </button>
-                    <% end %>
-                    <span><%= count_likes(item.id) %></span>
-                  </div>
+              <% if user_signed_in? %>
+                <% if is_liked?(current_user.id, item.id) %>
+                  <%= turbo_frame_tag dom_id(item, :like_section) do %>
+                    <% like = current_user.likes.find_by(likeable: item) %>
+                    <div class="d-flex align-items-center gap-1">
+                      <%= form_with url: like_path(like), method: :delete, data: { turbo: true } do %>
+                        <button type="submit" class="btn p-0 border-0 bg-transparent">
+                          <i class="fa-solid fa-heart text-danger heart-icon"></i>
+                        </button>
+                      <% end %>
+                      <span><%= count_likes(item.id) %></span>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <%= turbo_frame_tag dom_id(item, :like_section) do %>
+                    <div class="d-flex align-items-center gap-1">
+                      <%= form_with url: likes_path, method: :post, data: { turbo: true } do |f| %>
+                        <%= hidden_field_tag :likeable_type, "Photo" %>
+                        <%= hidden_field_tag :likeable_id, item.id %>
+                        <button type="submit" class="btn p-0 border-0 bg-transparent">
+                          <i class="fa-solid fa-heart heart-icon"></i>
+                        </button>
+                      <% end %>
+                      <span><%= count_likes(item.id) %></span>
+                    </div>
+                  <% end %>
                 <% end %>
               <% else %>
-                <%= turbo_frame_tag dom_id(item, :like_section) do %>
-                  <div class="d-flex align-items-center gap-1">
-                    <%= form_with url: likes_path, method: :post, data: { turbo: true } do |f| %>
-                      <%= hidden_field_tag :likeable_type, "Photo" %>
-                      <%= hidden_field_tag :likeable_id, item.id %>
-                      <button type="submit" class="btn p-0 border-0 bg-transparent">
-                        <i class="fa-solid fa-heart heart-icon"></i>
-                      </button>
-                    <% end %>
-                    <span><%= count_likes(item.id) %></span>
-                  </div>
-                <% end %>
+                <div></div>
               <% end %>
               <p><%= item.created_at.strftime("%-I:%M %P %d/%m/%Y") %></p>
             </div>
