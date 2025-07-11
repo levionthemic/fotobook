@@ -17,11 +17,6 @@ Rails.application.routes.draw do
     resources :followers, only: [:create, :destroy], controller: "follows"
     resources :followings, only: [:create, :destroy], controller: "follows"
     member do
-      get :photos
-      get :albums
-      get :followers
-      get :followings
-
       patch :follower
       patch :following
     end

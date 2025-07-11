@@ -144,7 +144,7 @@
               <span>ALBUMS</span>
             </div>
           </div>
-          <% if following?(item.id) %>
+          <% if is_following?(item.id) %>
             <div class="profile-info__badge"><span>following</span></div>
           <% else %>
             <%= form_with url: user_followers_path(current_user), local: true do |f| %>

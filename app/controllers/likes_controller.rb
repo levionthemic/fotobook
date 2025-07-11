@@ -6,18 +6,16 @@ class LikesController < ApplicationController
     @likeable = params[:likeable_type].constantize.find(params[:likeable_id])
     current_user.likes.create!(likeable: @likeable)
 
-    photo_ids = Photo.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc).pluck(:id)
-
     @likes_by_user = Like.where(
       user_id: current_user.id,
       likeable_type: "Photo",
-      likeable_id: photo_ids
-    ).pluck(:id, :likeable_id).to_set
+      likeable_id: params[:likeable_id].to_i
+    ).pluck(:id, :user_id)
 
-    @like_counts = Like.where(
+    @like_count = Like.where(
       likeable_type: "Photo",
-      likeable_id: photo_ids
-    ).group(:likeable_id).count
+      likeable_id: params[:likeable_id].to_i
+    ).count
 
     render_like_section
   end
@@ -25,20 +23,20 @@ class LikesController < ApplicationController
   def destroy
     @like = current_user.likes.find(params[:id])
     @likeable = @like.likeable
-    @like.destroy
 
-    photo_ids = Photo.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc).pluck(:id)
+    likeable_id = @like.likeable_id
+    @like.destroy
 
     @likes_by_user = Like.where(
       user_id: current_user.id,
       likeable_type: "Photo",
-      likeable_id: photo_ids
-    ).pluck(:id, :likeable_id).to_set
+      likeable_id: likeable_id
+    ).pluck(:id, :user_id)
 
-    @like_counts = Like.where(
+    @like_count = Like.where(
       likeable_type: "Photo",
-      likeable_id: photo_ids
-    ).group(:likeable_id).count
+      likeable_id: likeable_id
+    ).count
 
     render_like_section
   end

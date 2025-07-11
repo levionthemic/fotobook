@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(item, :like_section) do %>
   <div class="d-flex align-items-center gap-1">
-    <% if is_liked?(current_user.id, item.id) %>
-      <%= form_with url: like_path(get_like_id(item.id)), method: :delete, data: { turbo: true } do %>
+    <% if liked?(current_user.id) %>
+      <%= form_with url: like_path(get_like_id_by_user(current_user.id)), method: :delete, data: { turbo: true } do %>
         <button type="submit" class="btn p-0 border-0 bg-transparent">
           <i class="fa-solid fa-heart heart-icon text-danger"></i>
         </button>
@@ -16,6 +16,6 @@
         </button>
       <% end %>
     <% end %>
-    <span><%= count_likes(item.id) %></span>
+    <span><%= @like_count %></span>
   </div>
 <% end %>

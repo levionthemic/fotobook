@@ -1,6 +1,6 @@
 module FeedHelper
   def count_likes(photo_id)
-    @like_counts[photo_id] || 0
+    @like_count[photo_id] || 0
   end
 
   def is_liked?(user_id, photo_id)

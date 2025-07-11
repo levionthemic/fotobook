@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def show
     @param_user_id = params[:id]
-    @user = User.find(params[:id])
+    @user = User.includes(:photos, :albums, :followings, :followers).find(params[:id])
     @tab = params[:tab] || "photos"
     @items = []
 
@@ -51,34 +51,6 @@ class UsersController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def photos
-    @user = User.find(params[:id])
-    @items = @user.photos
-    @tab = "photos"
-    render "users/show"
-  end
-
-  def albums
-    @user = User.find(params[:id])
-    @items = @user.albums
-    @tab = "albums"
-    render "users/show"
-  end
-
-  def followers
-    @user = User.find(params[:id])
-    @items = @user.followers
-    @tab = "followers"
-    render "users/show"
-  end
-
-  def followings
-    @user = User.find(params[:id])
-    @items = @user.followings
-    @tab = "followings"
-    render "users/show"
   end
 
   # --------------------------------------------------
