@@ -24,13 +24,11 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
-    @photo = Photo.new(title: params[:title], description: params[:description], sharing_mode: params[:sharing_mode], image: params[:image], user_id: current_user.id)
+    @user = User.find(params[:user_id])
+    @photo = @user.photos.build(photo_params)
     if @photo.save
-      puts "✅ Save thành công"
-      puts "URL ảnh: #{@photo.image.url}"
       redirect_to user_path(current_user.id), notice: "Create photo successfully!"
     else
-      puts "❌ Save lỗi: #{@photo.errors.full_messages}"
       render :new, status: :unprocessable_entity
     end
   end
@@ -38,15 +36,8 @@ class PhotosController < ApplicationController
   # PATCH/PUT /photos/1 or /photos/1.json
   def update
     @photo = Photo.find(params[:id])
-    permitted = {
-      title: params[:title],
-      description: params[:description],
-      sharing_mode: params[:sharing_mode]
-    }
 
-    permitted[:image] = params[:image] if params[:image].present?
-
-    if @photo.update(permitted)
+    if @photo.update(photo_params)
       redirect_to user_path(current_user.id), notice: "Edit photo successfully!"
     else
       render :edit, status: :unprocessable_entity
@@ -78,6 +69,6 @@ class PhotosController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def photo_params
-    params.expect(photo: [:title, :description, :sharing_mode, :image])
+    params.require(:photo).permit(:title, :description, :sharing_mode, :image)
   end
 end

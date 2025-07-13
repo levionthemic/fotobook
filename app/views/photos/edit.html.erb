@@ -3,7 +3,7 @@
     <h5 class="font-weight-bold lh-1 m-0">Edit photo</h5>
     <%= link_to "Back", request.referer, class: "btn btn-primary" %>
   </div>
-  <%= form_with url: "/photos/#{@photo.id}/", method: :patch, local: true, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with model: @photo, url: "/photos/#{@photo.id}/", method: :patch, local: true, html: { enctype: "multipart/form-data" } do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>
@@ -31,7 +31,7 @@
     </div>
     <div class="mb-4">
       <%= f.label :image, "Upload Photo", class: "form-label d-block" %>
-      <label class="border border-secondary border-dashed d-flex align-items-center justify-content-center position-relative rounded overflow-hidden" style="width: 150px; height: 150px;">
+      <label for="image-upload" class="border border-secondary border-dashed d-flex align-items-center justify-content-center position-relative rounded overflow-hidden" style="width: 150px; height: 150px;">
 
         <%= image_tag "#{@photo.image.url}", alt: "", class: "w-100 h-100 object-fit-cover", id:
           'pre-image-preview' %>
@@ -79,49 +79,3 @@
         left: 120px;
     }
 </style>
-
-<script>
-    document.addEventListener("turbo:load", () => {
-        const closeIcon = document.getElementById("close-icon");
-        const imageUpload = document.getElementById("image-upload");
-        const preImagePreview = document.getElementById("pre-image-preview");
-        const plusIcon = document.getElementById("plus-icon");
-        if (closeIcon) {
-            closeIcon.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                closeIcon.classList.add("d-none");
-                preImagePreview.classList.add("d-none");
-                plusIcon.classList.remove("d-none");
-                imageUpload.style.pointerEvents = "auto";
-            })
-        }
-        if (imageUpload) {
-            imageUpload.addEventListener('click', () => {
-                imageUpload.value = '';
-            });
-            imageUpload.addEventListener("change", (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader()
-                    reader.onload = (e) => {
-                        preImagePreview.src = e.target.result
-                        preImagePreview.classList.remove("d-none");
-                        closeIcon.classList.remove("d-none");
-
-                        imageUpload.style.pointerEvents = "none";
-                        plusIcon.classList.add("d-none");
-                    }
-
-                    reader.readAsDataURL(file)
-                } else {
-                    preImagePreview.src = '#'
-                    closeIcon.classList.add("d-none");
-                    preImagePreview.classList.add("d-none");
-                    plusIcon.classList.remove("d-none");
-                    imageUpload.removeAttribute("disabled");
-                }
-            })
-        }
-    })
-</script>
