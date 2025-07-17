@@ -1,0 +1,20 @@
+<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+  <div class="admin-albums">
+    <% @albums.each do |album| %>
+      <div class="admin-albums__item rounded overflow-hidden">
+        <%= image_tag "#{album.photos[0].image}", alt: "" %>
+        <%= image_tag "#{album.photos[0].image}", alt: "" %>
+        <%= image_tag "#{album.photos[0].image}", alt: "" %>
+        <div class="d-flex align-items-center justify-content-center admin-albums__item--title w-100">
+          <span><%= album.title %></span>
+          <%= link_to edit_admin_album_path(album), class: "text-white" do %>
+            <i class="fa-regular fa-pen-to-square"></i>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="d-flex align-items-center justify-content-center">
+    <%= paginate @albums %>
+  </div>
+</div>

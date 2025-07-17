@@ -1,19 +1,24 @@
 <header class="header">
   <div class="header__logo-search">
     <% if user_signed_in? && current_user.role == 'admin' %>
-      <%= link_to "Fotobook Admin", "/admin/photos", class: "header__logo" %>
+      <%= link_to "Fotobook Admin", admin_root_path, class: "header__logo" %>
     <% else %>
-      <%= link_to "Fotobook", "/", class: "header__logo" %>
+      <%= link_to "Fotobook", root_path, class: "header__logo" %>
     <% end %>
     <form action="" class="header__search">
       <input type="text" placeholder="Select Photo / Album" class="form-control header__search-input"/>
     </form>
   </div>
-  <% if user_signed_in?%>
+  <% if user_signed_in? %>
     <div class="header__user">
       <%= link_to user_path(current_user, tab: 'photos'), class: "header__user--info" do %>
         <div class="header__user--avatar">
-          <%= image_tag "#{current_user.avatar.url}", alt: "Avatar", class: "" %>
+          <% if current_user.avatar.present? %>
+            <%= image_tag "#{current_user.avatar.url}", alt: "Avatar", class: "" %>
+          <% else %>
+            <%= image_tag "https://ui-avatars.com/api/?background=FFFFFF&color=3c5999&name=#{current_user
+              .first_name}+#{current_user.last_name}", alt: "Avatar" %>
+          <% end %>
         </div>
         <div class="text-white"><%= current_user.first_name %></div>
       <% end %>
@@ -39,9 +44,9 @@
             </div>
           </div>
         </div>
-      <% end%>
+      <% end %>
     </div>
   <% else %>
-    <%= link_to "Login", "/login", class: "header__login" %>
+    <%= link_to "Login", new_user_session_path, class: "header__login" %>
   <% end %>
 </header>

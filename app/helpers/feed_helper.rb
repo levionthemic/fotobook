@@ -12,6 +12,10 @@ module FeedHelper
   end
 
   def following?(user_id)
-    @followings.include?(user_id)
+    if @followings
+      @followings.include?(user_id)
+    else
+      false
+    end
   end
 end

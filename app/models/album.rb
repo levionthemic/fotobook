@@ -7,5 +7,4 @@ class Album < ApplicationRecord
   has_many :photos, through: :album_photos
 
   has_many :likes, as: :likeable, dependent: :destroy
-  has_many :notifications, as: :notifiable, dependent: :destroy
 end

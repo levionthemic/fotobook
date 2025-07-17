@@ -9,6 +9,8 @@
   width: 200px;
   aspect-ratio: 1/1;
   position: relative;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .admin-photos__item img {

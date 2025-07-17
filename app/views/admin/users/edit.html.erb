@@ -5,8 +5,9 @@
   </div>
   <hr>
   <div class="d-flex flex-column align-items-center mb-4">
-    <%= image_tag @user.avatar.present? ? @user.avatar.url : "default-avatar.png", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
-    <%= form_with model: @user, url: user_path(@user), html: { multipart: true }, method: :patch, local: true do |f| %>
+    <%= image_tag @user.avatar.present? ? @user.avatar.url : "https://ui-avatars.com/api/?background=FFFFFF&color=3c5999&name=#{current_user
+      .first_name}+#{current_user.last_name}", class: "rounded", style: "width: 120px; height: 120px; object-fit: cover;" %>
+    <%= form_with model: @user, url: admin_user_path(@user), html: { multipart: true }, method: :patch do |f| %>
       <label class="btn rounded position-relative" style="background: rgba(255,255,255, 0.7); top: -50px; font-size: 13px;">
         <%= f.file_field :avatar, class: "form-control-file mt-2 d-none" %>
         <span>CHANGE</span>
@@ -19,7 +20,7 @@
       <h6 class="text-primary fw-bold">Basic Information</h6>
     </div>
   </div>
-  <%= form_with model: @user, url: user_path(@user), method: :patch, local: true do |f| %>
+  <%= form_with model: @user, url: admin_user_path(@user), method: :patch do |f| %>
     <div class="form-group row align-items-center mb-2">
       <label class="col-5 text-end fw-bold" for="user_first_name">First Name</label>
       <div class="col-5">
@@ -47,7 +48,7 @@
     <div class="form-group row align-items-center mb-4">
       <label class="col-5 text-end fw-bold">Active?</label>
       <div class="col-5">
-        <%= f.check_box :status, { class: "form-check-input", checked: @user.status == 'active'}, 'active', 'inactive'%>
+        <%= f.check_box :status, { class: "form-check-input", checked: @user.status == 'active' }, 'active', 'inactive' %>
       </div>
     </div>
     <div class="row">

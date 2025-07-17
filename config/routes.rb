@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   }
 
   get "discover", to: "feed#show_discover"
-  # get "profile", to: "profile#index"
 
   resources :users, only: [:show, :edit, :update, :destroy] do
     resources :photos, except: [:index], shallow: true
@@ -24,21 +23,11 @@ Rails.application.routes.draw do
 
   resources :likes, only: [:create, :destroy]
 
-  get "admin/photos", to: "photos#admin_show_photos"
-  get "admin/albums", to: "albums#admin_show_albums"
-  get "admin/users", to: "users#admin_show_users"
-  get "admin/users/:id", to: "users#admin_show_user_detail"
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  namespace :admin do
+    root "photos#index"
+    resources :photos, only: [:index, :edit, :update]
+    resources :albums, only: [:index, :edit, :update]
+    resources :users, only: [:index, :edit, :update]
+  end
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end

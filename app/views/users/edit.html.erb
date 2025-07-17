@@ -4,14 +4,12 @@
   <div class="d-flex flex-column align-items-center mb-4">
     <%= image_tag @user.avatar.present? ? @user.avatar.url : "default-avatar.png", class: "rounded", style: "width:
     120px; height: 120px; object-fit: cover;", id: 'image-preview' %>
-    <%= form_with model: @user, url: user_path(@user), html: { multipart: true }, method: :patch, local: true do |f| %>
+    <%= form_with model: @user, html: { multipart: true }, method: :patch do |f| %>
       <label class="btn rounded position-relative" style="background: rgba(255,255,255, 0.7); top: -50px; font-size: 13px;">
         <%= f.file_field :avatar, class: "form-control-file mt-2 d-none", id: 'avatar-upload' %>
         <span>CHANGE</span>
       </label>
-      <%= f.submit "Save", id: 'avatar-submit', class: "btn btn-success d-none rounded position-relative",
-                   style:
-                     "top: -50px;" %>
+      <%= f.submit "Save", id: 'avatar-submit', class: "btn btn-success d-none rounded position-relative", style: "top: -50px;" %>
     <% end %>
   </div>
   <!-- Basic Info Form -->
@@ -20,12 +18,11 @@
       <h6 class="text-primary fw-bold">Basic Information</h6>
     </div>
   </div>
-  <%= form_with model: @user, url: user_path(@user), method: :patch, local: true do |f| %>
+  <%= form_with model: @user, method: :patch, local: true do |f| %>
     <div class="form-group row align-items-center <%= 'mb-2' unless @user.errors[:first_name].any? %>">
       <label class="col-5 text-end fw-bold" for="user_first_name">First Name</label>
       <div class="col-5">
-        <%= f.text_field :first_name, class: "form-control #{'is-invalid' if @user.errors[:first_name].any?}",
-                         placeholder: "First Name" %>
+        <%= f.text_field :first_name, class: "form-control #{'is-invalid' if @user.errors[:first_name].any?}", placeholder: "First Name" %>
       </div>
     </div>
     <div class="row">

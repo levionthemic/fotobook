@@ -13,7 +13,6 @@ class FollowsController < ApplicationController
   end
 
   def destroy
-    # Hủy theo dõi
     user_id = current_user.id
     following_id = params[:id]
     Follow.destroy_by(follower_id: user_id, following_id: following_id)

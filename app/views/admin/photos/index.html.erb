@@ -1,0 +1,18 @@
+<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+  <div class="admin-photos">
+    <% @photos.each do |photo| %>
+      <div class="admin-photos__item">
+        <%= image_tag "#{photo.image}", alt: "" %>
+        <div class="d-flex align-items-center justify-content-center admin-photos__item--title w-100">
+          <span><%= photo.title %></span>
+          <%= link_to edit_admin_photo_path(photo), class: "text-white" do %>
+            <i class="fa-regular fa-pen-to-square"></i>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="d-flex align-items-center justify-content-center">
+    <%= paginate @photos %>
+  </div>
+</div>

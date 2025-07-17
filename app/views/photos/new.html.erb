@@ -1,6 +1,6 @@
 <div class="bg-white p-4 m-4" style="min-height: 90vh;">
   <h3 class="mb-4 border-bottom pb-2">New Photo</h3>
-  <%= form_with model: @photo, url: user_photos_path(current_user), method: :post, local: true, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with model: @photo, url: user_photos_path(current_user), method: :post, html: { enctype: "multipart/form-data" } do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>

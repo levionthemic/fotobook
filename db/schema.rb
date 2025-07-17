@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_021403) do
   create_table "album_photos", force: :cascade do |t|
     t.bigint "album_id", null: false
     t.bigint "photo_id", null: false
@@ -52,20 +52,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "notifier_id", null: false
-    t.string "notifiable_type", null: false
-    t.bigint "notifiable_id", null: false
-    t.string "action", null: false
-    t.boolean "read", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
-    t.index ["notifier_id"], name: "index_notifications_on_notifier_id"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
-  end
-
   create_table "photos", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", limit: 140, null: false
@@ -101,7 +87,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_01_064437) do
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
   add_foreign_key "likes", "users"
-  add_foreign_key "notifications", "users"
-  add_foreign_key "notifications", "users", column: "notifier_id"
   add_foreign_key "photos", "users"
 end

@@ -50,7 +50,8 @@ gem "open-uri"
 gem "carrierwave"
 gem "cloudinary", "~> 1.29"
 
-# gem "carrierwave-cloudinary"
+gem "kaminari"
+gem "cancancan"
 
 
 
