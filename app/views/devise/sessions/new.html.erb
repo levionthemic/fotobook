@@ -10,7 +10,7 @@
       <div class="login-wrap__form--img">
         <%= image_tag "unknown-avatar.png", alt: "Avatar" %>
       </div>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo: false } }) do |f| %>
         <div class="field">
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Email" %>
         </div>

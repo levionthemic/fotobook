@@ -1,128 +1,152 @@
 .feeds {
-  background-color: #f8f8f8;
-  margin: 20px 0;
-  padding: 20px auto;
+    background-color: #f8f8f8;
+    margin: 20px 0;
+    padding: 20px auto;
 }
 
 .feeds-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  background-color: white;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
 }
+
 .feeds-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    gap: 20px;
 }
 
 .feeds-list__item {
-  display: flex;
-  align-items: stretch;
-  width: 500px;
-  height: 255px;
+    display: flex;
+    align-items: stretch;
+    width: 500px;
+    height: 255px;
 
-  background: #f8f8f8;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 3px 0px 0px 3px;
+    background: #f8f8f8;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 3px 0px 0px 3px;
 
 }
 
 .feeds-list__item:hover {
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .feeds-list__item--image {
-  width: 55%;
-  position: relative;
-  cursor: pointer;
+    width: 255px;
+    position: relative;
+    cursor: pointer;
+    aspect-ratio: 1/1;
 }
 
 .feeds-list__item--image > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .feeds-list__item--image div img {
-  width: 80%;
-  height: 80%;
-  object-fit: cover;
-  position: absolute;
-  z-index: 3;
-  border: 1px solid white;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);  
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 3;
+    border: 1px solid white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .feeds-list__item--image div img:nth-child(2) {
-  transform: rotate(6deg);
-  z-index: 2;
-  /* transform: translateY(-5px); */
+    transform: rotate(6deg);
+    z-index: 2;
+    /* transform: translateY(-5px); */
 }
 
 .feeds-list__item--image div img:nth-child(3) {
-  transform: rotate(12deg) translate(1px, 1px);
-  z-index: 1;
+    transform: rotate(12deg) translate(1px, 1px);
+    z-index: 1;
 }
 
 .feeds-list__item--content {
-  flex: 1;
-  padding: 10px;
-  font-size: 13px;
+    flex: 1;
+    padding: 10px;
+    font-size: 13px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .feeds-list__item--profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
 }
 
 .feeds-list__item--avatar {
-  border-radius: 100%;
-  border: 2px solid white;
-  width: 35px;
-  height: 35px;
-  overflow: hidden;
+    border-radius: 100%;
+    border: 2px solid white;
+    width: 35px;
+    height: 35px;
+    overflow: hidden;
 }
 
 .feeds-list__item--avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .feeds-list__item--avatar ~ span {
-  color: var(--primary-color);
-  font-weight: bold;
-  flex: 1;
+    color: var(--primary-color);
+    font-weight: bold;
+    flex: 1;
 }
 
 .feeds-list__item--desc {
-  line-height: 1.2;
+    line-height: 1.2;
 }
 
 .feeds-list__item--time {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: gray;
 }
 
 .feeds-list__item--time span {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .feeds-list__item--time .heart-icon {
-  /* color: var(--primary-color); */
-  color: rgba(114, 114, 114, 0.3);
+    /* color: var(--primary-color); */
+    color: rgba(114, 114, 114, 0.3);
 }
+
+
+.loader {
+    width: 30px;
+    height: 30px;
+    border: 5px dotted var(--primary-color);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+

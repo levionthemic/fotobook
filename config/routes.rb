@@ -12,13 +12,8 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update, :destroy] do
     resources :photos, except: [:index], shallow: true
     resources :albums, except: [:index], shallow: true
-
     resources :followers, only: [:create, :destroy], controller: "follows"
     resources :followings, only: [:create, :destroy], controller: "follows"
-    member do
-      patch :follower
-      patch :following
-    end
   end
 
   resources :likes, only: [:create, :destroy]

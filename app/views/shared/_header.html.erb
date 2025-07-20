@@ -22,16 +22,16 @@
         </div>
         <div class="text-white"><%= current_user.first_name %></div>
       <% end %>
-      <%= form_with url: '/logout', method: :delete, local: true, html: { id: "logout-form" } do %>
-        <button type="button" class="header__user--logout" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <%= form_with url: '/logout', method: :delete, local: true, html: { id: "logout-form", data: { turbo: false } } do %>
+        <button type="button" class="header__user--logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
           Logout
         </button>
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Cảnh báo!</h1>
+                <h1 class="modal-title fs-5" id="logoutModalLabel">Cảnh báo!</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">

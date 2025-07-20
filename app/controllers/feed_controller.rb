@@ -19,6 +19,12 @@ class FeedController < ApplicationController
       @items = Album.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
     end
 
+    @items = @items.page(params[:page]).per(6)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show_discover
@@ -35,6 +41,13 @@ class FeedController < ApplicationController
       ).pluck(:following_id).to_set
     else
       @items = Album.all.limit(10)
+    end
+
+    @items = @items.page(params[:page]).per(6)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
   end
 

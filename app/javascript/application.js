@@ -2,12 +2,10 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-document.addEventListener('turbo:load', function () {
-    console.log("turbo loaded")
-})
-
 // users/edit
 document.addEventListener('turbo:load', () => {
+    console.log("turbo loaded")
+
     if (location.pathname.match(new RegExp(/^\/users\/\d+\/edit$/))) {
         console.log('ok')
         const inputUpload = document.querySelector('#avatar-upload')
@@ -114,8 +112,6 @@ document.addEventListener('turbo:load', () => {
     }
 
     if (location.pathname.match(new RegExp(/^\/photos\/\d+\/edit$/))) {
-        console.log('ok')
-
         const closeIcon = document.getElementById("close-icon");
         const imageUpload = document.getElementById("image-upload");
         const preImagePreview = document.getElementById("pre-image-preview");
@@ -166,6 +162,28 @@ document.addEventListener('turbo:load', () => {
             })
         }
     }
+
+    if (location.pathname.match(new RegExp(/^\/users\/\d+\/albums\/new$/))) {
+        const inputUpload = document.querySelector('#image-upload')
+        const imagePreviewList = document.querySelector('.image-preview-list')
+
+        if (inputUpload) {
+            inputUpload.addEventListener('change', () => {
+                const file = inputUpload.files[0]
+                if (file) {
+                    const reader = new FileReader()
+                    const imagePreview = document.createElement('img')
+                    reader.onload = (e) => {
+                        imagePreview.classList.add('image-preview', 'rounded', 'object-cover')
+                        imagePreview.src = e.target.result
+                        imagePreview.style.display = 'block'
+                    }
+                    imagePreviewList.insertBefore(imagePreview, inputUpload.parentElement)
+
+                    reader.readAsDataURL(file)
+                }
+            })
+        }
+
+    }
 })
-
-

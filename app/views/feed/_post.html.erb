@@ -1,0 +1,64 @@
+<div class="feeds-list__item">
+  <div class="feeds-list__item--image" data-bs-toggle="modal" data-bs-target="#viewFeed" data-title="<%= item.title %>" data-description="<%= item.description %>" data-image="<%= url_for(item.image.url) if !params[:tab] || params[:tab] == 'photos' %>" data-images='<%= raw(item.photos.map(&:image).to_json) if params[:tab] == 'albums' %>'>
+    <% if !params[:tab] || params[:tab] == 'photos' %>
+      <%= image_tag "#{item.image.url}", alt: "" %>
+    <% else %>
+      <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
+        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
+        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
+        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="feeds-list__item--content">
+    <div class="">
+      <%= link_to user_path(item.user), class: "feeds-list__item--profile" do %>
+        <div class="feeds-list__item--avatar">
+          <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
+        </div>
+        <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
+      <% end %>
+      <p class="my-2"><b><%= item.title %></b></p>
+      <p class="feeds-list__item--desc">
+        <%= item.description %>
+      </p>
+    </div>
+    <div class="feeds-list__item--time">
+      <% if user_signed_in? %>
+        <% if is_liked?(current_user.id, item.id) %>
+          <%= turbo_frame_tag dom_id(item, :like_section) do %>
+            <div class="d-flex align-items-center gap-1">
+              <%= form_with url: like_path(get_like_id(item.id)), method: :delete, data: { turbo: true } do %>
+                <button type="submit" class="btn p-0 border-0 bg-transparent">
+                  <i class="fa-solid fa-heart text-danger heart-icon"></i>
+                </button>
+              <% end %>
+              <span><%= count_likes(item.id) %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <%= turbo_frame_tag dom_id(item, :like_section) do %>
+            <div class="d-flex align-items-center gap-1">
+              <%= form_with url: likes_path, method: :post, data: { turbo: true } do |f| %>
+                <%= hidden_field_tag :likeable_type, "Photo" %>
+                <%= hidden_field_tag :likeable_id, item.id %>
+                <button type="submit" class="btn p-0 border-0 bg-transparent">
+                  <i class="fa-solid fa-heart heart-icon"></i>
+                </button>
+              <% end %>
+              <span><%= count_likes(item.id) %></span>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="d-flex align-items-center gap-1">
+          <button type="submit" class="btn p-0 border-0 bg-transparent" disabled>
+            <i class="fa-solid fa-heart heart-icon"></i>
+          </button>
+          <span><%= count_likes(item.id) %></span>
+        </div>
+      <% end %>
+      <p><%= item.created_at.strftime("%-I:%M %P %d/%m/%Y") %></p>
+    </div>
+  </div>
+</div>
