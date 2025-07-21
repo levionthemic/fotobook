@@ -1,5 +1,6 @@
 class FeedController < ApplicationController
   before_action :set_shared_data
+  before_action :check_user_only
 
   def index
     @tab = params[:tab]
@@ -83,6 +84,11 @@ class FeedController < ApplicationController
         likeable_type: "Photo",
         likeable_id: photo_ids
       ).group(:likeable_id).count
+    end
+  end
+  def check_user_only
+    unless !current_user || current_user.user?
+      redirect_to admin_root_path, alert: "Bạn không có quyền truy cập trang này."
     end
   end
 

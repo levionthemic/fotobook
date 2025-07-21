@@ -2,6 +2,7 @@
 
 module Admin
   class PhotosController < ApplicationController
+    before_action :check_admin_only
     def index
       @photos = Photo.all.page(params[:page]).per(10)
     end
@@ -23,6 +24,12 @@ module Admin
 
     def photo_params
       params.require(:photo).permit(:title, :description, :sharing_mode, :image)
+    end
+
+    def check_admin_only
+      unless current_user.admin?
+        redirect_to admin_root_path, alert: "Bạn không có quyền truy cập trang admin."
+      end
     end
   end
 end

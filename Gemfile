@@ -22,6 +22,13 @@ gem "jbuilder"
 gem "bcrypt", "~> 3.1.7"
 gem "devise"
 
+gem "omniauth"
+gem "omniauth-google-oauth2"
+gem "omniauth-facebook"
+gem "omniauth-twitter"
+
+gem "omniauth-rails_csrf_protection"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -42,8 +49,7 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-
-gem "dotenv-rails", groups: [ :development, :test ]
+gem "dotenv-rails", groups: [:development, :test]
 gem "faker"
 gem "open-uri"
 
@@ -51,9 +57,7 @@ gem "carrierwave"
 gem "cloudinary", "~> 1.29"
 
 gem "kaminari"
-gem "cancancan"
-
-
+# gem "cancancan"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

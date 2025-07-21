@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
+
+  devise_for :users,
+   controllers: {
+     omniauth_callbacks: "users/omniauth_callbacks"
+   },
+   path: "",
+   path_names: {
+     sign_in: "login",
+     sign_out: "logout",
+     sign_up: "signup"
+   }
+
   root "feed#index"
-
-  devise_for :users, path: "", path_names: {
-    sign_in: "login",
-    sign_out: "logout",
-    sign_up: "signup"
-  }
-
   get "discover", to: "feed#show_discover"
 
   resources :users, only: [:show, :edit, :update, :destroy] do
