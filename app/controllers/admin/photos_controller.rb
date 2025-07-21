@@ -27,8 +27,8 @@ module Admin
     end
 
     def check_admin_only
-      unless current_user.admin?
-        redirect_to admin_root_path, alert: "Bạn không có quyền truy cập trang admin."
+      unless current_user&.admin?
+        redirect_to root_path, alert: "Bạn không có quyền truy cập trang admin."
       end
     end
   end
