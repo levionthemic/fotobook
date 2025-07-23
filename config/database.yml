@@ -18,5 +18,5 @@ test:
 
 production:
   <<: *default
-  database: myapp_production
+  database: final-app-production
   # username: levion
