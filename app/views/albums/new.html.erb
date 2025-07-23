@@ -1,6 +1,6 @@
-<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
   <h3 class="mb-4 border-bottom pb-2">New Album</h3>
-  <%= form_with url: user_albums_path(@user_id), local: true, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with model: @album, url: user_albums_path(@user_id) do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>
@@ -16,20 +16,42 @@
       <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
     </div>
     <div class="mb-4 d-flex align-items-center gap-2 flex-wrap image-preview-list">
-      <label class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2">
+      <button type="button" class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2" data-bs-toggle="modal" data-bs-target="#uploadAlbum">
         <span class="fs-1 text-muted">+</span>
-        <%= f.file_field :image, class: "d-none", id: "image-upload" %>
-      </label>
+      </button>
     </div>
+    <%= hidden_field_tag "album[selected_photo_ids]", "" %>
     <%= f.submit "Save", class: "btn btn-success" %>
   <% end %>
 </div>
 
-<style>
-    .image-preview {
-        width: 150px;
-        height: 150px;
-        display: none;
-    }
-</style>
+<div class="modal fade" id="uploadAlbum" tabindex="-1" aria-labelledby="uploadAlbumLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="uploadAlbumLabel">Choose photos</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: "", class: "modal-photos" do |f| %>
+          <% current_user.photos.each do |photo| %>
+            <div class="position-relative">
+              <%= f.check_box :image, id: "image_#{photo.id}", class: "modal-photo-checkbox" %>
+              <%= f.label :image, class: "modal-photo-item", for: "image_#{photo.id}" do %>
+                <%= image_tag photo.image.url, alt: photo.title %>
+                <p class="text-center lh-1"><%= photo.title %></p>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="choose-photos">Select</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 

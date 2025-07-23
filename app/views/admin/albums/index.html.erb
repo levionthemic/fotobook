@@ -1,4 +1,4 @@
-<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
   <div class="admin-albums">
     <% @albums.each do |album| %>
       <div class="admin-albums__item rounded overflow-hidden">
@@ -15,6 +15,6 @@
     <% end %>
   </div>
   <div class="d-flex align-items-center justify-content-center">
-    <%= paginate @albums %>
+    <%= paginate @albums, remote: true %>
   </div>
 </div>

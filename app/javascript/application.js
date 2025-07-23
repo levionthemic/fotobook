@@ -6,7 +6,7 @@ import "controllers"
 document.addEventListener('turbo:load', () => {
     console.log("turbo loaded")
 
-    document.querySelector(".header__user--logout").addEventListener("click", (e) => {
+    document.querySelector(".header__user--logout")?.addEventListener("click", (e) => {
         // Reset
         document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
             if (index > 0) el.remove();
@@ -15,7 +15,6 @@ document.addEventListener('turbo:load', () => {
 
 
     if (location.pathname.match(new RegExp(/^\/(?:admin\/)?users\/\d+\/edit$/))) {
-        console.log('ok')
         const inputUpload = document.querySelector('#avatar-upload')
         const avatarSubmit = document.querySelector('#avatar-submit')
         const imagePreview = document.querySelector('#image-preview')
@@ -171,27 +170,35 @@ document.addEventListener('turbo:load', () => {
         }
     }
 
-    if (location.pathname.match(new RegExp(/^\/users\/\d+\/albums\/new$/))) {
-        const inputUpload = document.querySelector('#image-upload')
+    if (location.pathname.match(new RegExp(/^\/users\/\d+\/albums\/new$/)) || location.pathname.match(new RegExp(/^\/albums\/\d+\/edit$/))) {
         const imagePreviewList = document.querySelector('.image-preview-list')
-
-        if (inputUpload) {
-            inputUpload.addEventListener('change', () => {
-                const file = inputUpload.files[0]
-                if (file) {
-                    const reader = new FileReader()
-                    const imagePreview = document.createElement('img')
-                    reader.onload = (e) => {
-                        imagePreview.classList.add('image-preview', 'rounded', 'object-cover')
-                        imagePreview.src = e.target.result
-                        imagePreview.style.display = 'block'
-                    }
-                    imagePreviewList.insertBefore(imagePreview, inputUpload.parentElement)
-
-                    reader.readAsDataURL(file)
+        let photoIds = JSON.parse(imagePreviewList.dataset.photoIds)
+        const choosePhotosButton = document.getElementById("choose-photos");
+        choosePhotosButton?.addEventListener("click", () => {
+            photoIds = []
+            let photoSrcs = []
+            const checkedPhotos = document.querySelectorAll(".modal-photo-checkbox")
+            for (let i = 0; i < checkedPhotos.length; i++) {
+                if (checkedPhotos[i].checked) {
+                    const photoId = Number(checkedPhotos[i].getAttribute("id").split("_")[1])
+                    const photoSrc = checkedPhotos[i].nextElementSibling.querySelector("img").src;
+                    photoIds.push(photoId);
+                    photoSrcs.push(photoSrc);
                 }
+            }
+            while (imagePreviewList.children.length > 1) {
+                imagePreviewList.removeChild(imagePreviewList.children[0]);
+            }
+            photoIds.forEach((photoId, index) => {
+                const imagePreview = document.createElement('img')
+                    imagePreview.classList.add('image-preview', 'rounded', 'object-cover')
+                    imagePreview.src = photoSrcs[index]
+                    imagePreview.style.display = 'block'
+                imagePreviewList.insertBefore(imagePreview, imagePreviewList.querySelector('button'));
             })
-        }
 
+            const hiddenField = document.querySelector("input[name='album[selected_photo_ids]']");
+            hiddenField.value = photoIds;
+        })
     }
 })

@@ -36,7 +36,7 @@
     </div>
   <% end %>
   <div class="d-flex" style="background-color: #F8F8F8;">
-    <div style="width:15%; position: relative; height: calc(100vh - var(--header-height));))" class="d-none d-md-block">
+    <div style="width:15%; position: relative; height: calc(100vh - var(--header-height));" class="d-none d-md-block">
       <% if user_signed_in? && current_user.role == 'admin' %>
         <%= render "shared/sidebar-admin" %>
       <% else %>

@@ -1,4 +1,4 @@
-<div class="bg-white p-4 m-4" style="min-height: 90vh;">
+<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
   <div class="d-flex align-items-center justify-content-between">
     <h5 class="font-weight-bold lh-1 m-0">Edit album</h5>
     <%= link_to "Back", request.referer, class: "btn btn-primary" %>
@@ -20,7 +20,7 @@
     </div>
     <div class="mb-4">
       <%= f.label :image, "Upload album", class: "form-label d-block" %>
-      <div class="w-100 d-flex gap-2 flex-row align-items-center">
+      <div class="w-100 d-flex gap-2 flex-wrap align-items-center">
         <% @album.photos.each do |photo| %>
           <label class="overflow-hidden d-flex align-items-center justify-content-center rounded position-relative" style="width: 150px; height: 150px;">
             <%= image_tag "#{photo.image}", alt: "", class: "w-100 h-100 object-fit-cover" %>

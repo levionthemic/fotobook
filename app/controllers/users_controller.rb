@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
+  before_action :reject_admin_access, only: [:edit, :update]
 
   def show
     @param_user_id = params[:id]
@@ -77,6 +78,14 @@ class UsersController < ApplicationController
       else
         render :edit, status: :unprocessable_entity
       end
+    end
+  end
+
+  private
+
+  def reject_admin_access
+    if current_user.admin?
+      redirect_to root_path
     end
   end
 end

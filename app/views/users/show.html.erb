@@ -1,7 +1,13 @@
 <div class="profile">
   <div class="profile-info">
     <div class="profile-info__avatar">
-      <%= image_tag "#{@user.avatar.url}", alt: "Avatar", class: "" %>
+      <% if @user.avatar.present? %>
+        <%= image_tag "#{@user.avatar.url}", alt: "Avatar", class: "" %>
+      <% else %>
+        <%= image_tag "https://ui-avatars.com/api/?background=FFFFFF&color=3c5999&name=#{@user
+          .first_name}+#{@user.last_name}", alt: "Avatar" %>
+      <% end %>
+      <%#= image_tag "#{@user.avatar.url}", alt: "Avatar", class: "" %>
     </div>
     <div class="profile-info__content">
       <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
@@ -83,13 +89,13 @@
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-list__item">
           <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
             <div class="position-relative first-img">
-              <%= image_tag "#{item.photos[0].image}", alt: "" %>
+              <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
               <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
                 <%= link_to "EDIT", edit_album_path(item), class: "profile-list__item--after profile-list__item--after-albums" %>
               <% end %>
             </div>
-            <%= image_tag "#{item.photos[0].image}", alt: "" %>
-            <%= image_tag "#{item.photos[0].image}", alt: "" %>
+            <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
+            <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
             <div class="profile-list__item--count">
               <span class="fs-3 lh-1"><%= item.photos.length %></span>
               PHOTOS

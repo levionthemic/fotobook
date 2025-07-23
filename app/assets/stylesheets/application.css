@@ -18,7 +18,6 @@
   --bs-primary: var(--primary-color);
   --bs-link-color-rgb: 60, 89, 153;
   --bs-link-color: var(--primary-color);
-
 }
 
 .btn-primary {
