@@ -4,7 +4,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
-
+  def active_for_authentication?
+    super && status != "inactive"
+  end
   def self.from_omniauth(auth)
     User.create(
       email: auth.info.email,

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class LikesController < ApplicationController
+  load_and_authorize_resource
   include ActionView::RecordIdentifier
+
   def create
     @likeable = params[:likeable_type].constantize.find(params[:likeable_id])
     current_user.likes.create!(likeable: @likeable)

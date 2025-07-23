@@ -35,18 +35,22 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <% end %>
-  <div class="row g-0" style="background-color: #F8F8F8; max-width: 100vw;">
-    <% if user_signed_in? && current_user.role == 'admin' %>
-      <%= render "shared/sidebar-admin" %>
-    <% else %>
-      <%= render "shared/sidebar" unless devise_controller? %>
-    <% end %>
-    <div class="col-10 row g-0">
-      <div class="col-11">
-        <%= yield %>
-      </div>
+  <div class="d-flex" style="background-color: #F8F8F8;">
+    <div style="width:15%; position: relative; height: calc(100vh - var(--header-height));))" class="d-none d-md-block">
+      <% if user_signed_in? && current_user.role == 'admin' %>
+        <%= render "shared/sidebar-admin" %>
+      <% else %>
+        <%= render "shared/sidebar" unless devise_controller? %>
+      <% end %>
     </div>
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; height: 100%">
+
+      <%= yield %>
+
+    </div>
+    <div style="width:15%;" class="d-none d-md-block"></div>
   </div>
+
 </main>
 <script
   src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

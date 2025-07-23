@@ -10,7 +10,7 @@
       <%= render partial: "post", collection: @items, as: :item %>
     </div>
     <div id="pagination" data-controller="infinite-scroll">
-      <%= link_to root_path(tab: @tab, page: @items.next_page),
+      <%= link_to discover_path(tab: @tab, page: @items.next_page),
                   data: { turbo_frame: "pagination", turbo_action: "append", turbo_stream: true }, class:
                     "d-flex align-items-center justify-content-center gap-2", remote: true do %>
         <span class="loader"></span>

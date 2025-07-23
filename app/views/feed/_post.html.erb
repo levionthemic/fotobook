@@ -12,12 +12,26 @@
   </div>
   <div class="feeds-list__item--content">
     <div class="">
-      <%= link_to user_path(item.user), class: "feeds-list__item--profile" do %>
-        <div class="feeds-list__item--avatar">
-          <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
-        </div>
-        <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
-      <% end %>
+      <div class="d-flex align-items-center justify-content-between">
+        <%= link_to user_path(item.user), class: "feeds-list__item--profile" do %>
+          <div class="feeds-list__item--avatar">
+            <%= image_tag "#{item.user.avatar.url}", alt: "Avatar", class: "" %>
+          </div>
+          <span><%= "#{item.user.first_name} #{item.user.last_name}" %></span>
+        <% end %>
+        <% if request.path.start_with?("/discover") %>
+          <% if following?(item.user.id) %>
+            <div class="profile-info__badge mb-0"><span>following</span></div>
+          <% else %>
+            <%= form_with url: user_followers_path(current_user) do |f| %>
+              <%= hidden_field_tag :following_id, item.user.id %>
+              <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive mb-0", id: "follow_button_#{item.user.id}" do %>
+                <span>follow</span>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
       <p class="my-2"><b><%= item.title %></b></p>
       <p class="feeds-list__item--desc">
         <%= item.description %>

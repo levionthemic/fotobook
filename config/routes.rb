@@ -17,8 +17,10 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update, :destroy] do
     resources :photos, except: [:index], shallow: true
     resources :albums, except: [:index], shallow: true
-    resources :followers, only: [:create, :destroy], controller: "follows"
-    resources :followings, only: [:create, :destroy], controller: "follows"
+    resources :followers, only: [:create], controller: "follows"
+    resources :followings, only: [:create], controller: "follows"
+
+    delete "unfollow/:following_id", to: "follows#destroy", as: :unfollow
   end
 
   resources :likes, only: [:create, :destroy]

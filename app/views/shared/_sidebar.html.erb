@@ -1,6 +1,6 @@
-<div class="col-2 sidebar">
+<div class="sidebar">
   <div class="sidebar-list">
-    <%= link_to "Feeds", root_path(tab: 'photos'), class: ["sidebar-list__item", ('sidebar-list__item--active' if
+    <%= link_to "Feeds", root_path, class: ["sidebar-list__item", ('sidebar-list__item--active' if
       !side_bar_pathname?(discover_path) && controller_name == 'feed')] %>
     <% if user_signed_in? %>
       <%= link_to "Discover", discover_path, class: ["sidebar-list__item", ('sidebar-list__item--active' if

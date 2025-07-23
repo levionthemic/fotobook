@@ -1,10 +1,19 @@
 <div id="pagination" data-controller="infinite-scroll">
   <% if items.next_page %>
-    <%= link_to root_path(tab: @tab, page: @items.next_page),
-                data: { turbo_frame: "pagination", turbo_action: "append", turbo_stream: true }, class:
-                  "d-flex align-items-center justify-content-center gap-2", remote: true do %>
-      <span class="loader"></span>
-      <span id="load-text">Tải thêm</span>
+    <% if is_discover == true %>
+      <%= link_to discover_path(tab: @tab, page: items.next_page),
+                  data: { turbo_frame: "pagination", turbo_action: "append", turbo_stream: true }, class:
+                    "d-flex align-items-center justify-content-center gap-2", remote: true do %>
+        <span class="loader"></span>
+        <span id="load-text">Tải thêm</span>
+      <% end %>
+    <% else %>
+      <%= link_to root_path(tab: @tab, page: items.next_page),
+                  data: { turbo_frame: "pagination", turbo_action: "append", turbo_stream: true }, class:
+                    "d-flex align-items-center justify-content-center gap-2", remote: true do %>
+        <span class="loader"></span>
+        <span id="load-text">Tải thêm</span>
+      <% end %>
     <% end %>
   <% else %>
     <div class="text-muted">Đã tải hết bài viết</div>

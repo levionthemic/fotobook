@@ -6,7 +6,15 @@ import "controllers"
 document.addEventListener('turbo:load', () => {
     console.log("turbo loaded")
 
-    if (location.pathname.match(new RegExp(/^\/users\/\d+\/edit$/))) {
+    document.querySelector(".header__user--logout").addEventListener("click", (e) => {
+        // Reset
+        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+            if (index > 0) el.remove();
+        });
+    })
+
+
+    if (location.pathname.match(new RegExp(/^\/(?:admin\/)?users\/\d+\/edit$/))) {
         console.log('ok')
         const inputUpload = document.querySelector('#avatar-upload')
         const avatarSubmit = document.querySelector('#avatar-submit')
@@ -31,7 +39,7 @@ document.addEventListener('turbo:load', () => {
         }
     }
 
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '/discover') {
         document.querySelectorAll(".tab-label").forEach(label => {
             label.addEventListener("click", e => {
                 e.preventDefault()
@@ -69,7 +77,7 @@ document.addEventListener('turbo:load', () => {
                     // Xoá cũ
                     carouselInner.innerHTML = "";
 
-                    imageArray.forEach((url, index) => {
+                    imageArray.forEach(({ url }, index) => {
                         const div = document.createElement("div");
                         div.className = "carousel-item" + (index === 0 ? " active" : "");
                         div.innerHTML = `<img src="${url}" class="d-block w-100" alt="carousel image">`;
@@ -111,7 +119,7 @@ document.addEventListener('turbo:load', () => {
 
     }
 
-    if (location.pathname.match(new RegExp(/^\/photos\/\d+\/edit$/))) {
+    if (location.pathname.match(new RegExp(/^\/(?:admin\/)?photos\/\d+\/edit$/))) {
         const closeIcon = document.getElementById("close-icon");
         const imageUpload = document.getElementById("image-upload");
         const preImagePreview = document.getElementById("pre-image-preview");

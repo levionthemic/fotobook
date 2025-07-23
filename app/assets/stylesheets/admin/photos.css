@@ -11,6 +11,8 @@
   position: relative;
   border-radius: 10px;
   overflow: hidden;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .admin-photos__item img {

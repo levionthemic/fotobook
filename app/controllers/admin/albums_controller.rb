@@ -2,6 +2,8 @@
 
 module Admin
   class AlbumsController < ApplicationController
+    load_and_authorize_resource
+    before_action :check_admin_only
     def index
       @albums = Album.all.page(params[:page]).per(10)
     end
@@ -23,6 +25,12 @@ module Admin
 
     def album_params
       Album.require(:album).permit(:title, :description, :sharing_mode)
+    end
+
+    def check_admin_only
+      unless current_user&.admin?
+        redirect_to root_path, alert: "Bạn không có quyền truy cập trang admin."
+      end
     end
   end
 end

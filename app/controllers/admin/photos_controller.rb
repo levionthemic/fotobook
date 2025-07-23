@@ -2,9 +2,11 @@
 
 module Admin
   class PhotosController < ApplicationController
+    load_and_authorize_resource
     before_action :check_admin_only
+
     def index
-      @photos = Photo.all.page(params[:page]).per(10)
+      @photos = Photo.all.page(params[:page]).per(40)
     end
 
     def edit
