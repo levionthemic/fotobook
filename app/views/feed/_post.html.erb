@@ -42,7 +42,7 @@
         <% if is_liked?(current_user.id, item.id) %>
           <%= turbo_frame_tag dom_id(item, :like_section) do %>
             <div class="d-flex align-items-center gap-1">
-              <%= form_with url: like_path(get_like_id(item.id)), method: :delete, data: { turbo: true } do %>
+              <%= form_with url: like_path(get_like_id(item.id), tab: params[:tab]), method: :delete, data: { turbo: true } do %>
                 <button type="submit" class="btn p-0 border-0 bg-transparent">
                   <i class="fa-solid fa-heart text-danger heart-icon"></i>
                 </button>
@@ -53,8 +53,12 @@
         <% else %>
           <%= turbo_frame_tag dom_id(item, :like_section) do %>
             <div class="d-flex align-items-center gap-1">
-              <%= form_with url: likes_path, method: :post, data: { turbo: true } do |f| %>
-                <%= hidden_field_tag :likeable_type, "Photo" %>
+              <%= form_with url: likes_path(tab: params[:tab]), method: :post, data: { turbo: true } do |f| %>
+                <% if !params[:tab] || params[:tab] == 'photos' %>
+                  <%= hidden_field_tag :likeable_type, "Photo" %>
+                <% else %>
+                  <%= hidden_field_tag :likeable_type, "Album" %>
+                <% end %>
                 <%= hidden_field_tag :likeable_id, item.id %>
                 <button type="submit" class="btn p-0 border-0 bg-transparent">
                   <i class="fa-solid fa-heart heart-icon"></i>

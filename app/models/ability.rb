@@ -12,7 +12,7 @@ class Ability
     else
       can :read, :all
       can :create, User
-      can :edit, User
+      can :update, User, id: user.id
       can :manage, Photo, user_id: user.id
       can :manage, Album, user_id: user.id
       can :manage, Like, user_id: user.id

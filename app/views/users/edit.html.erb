@@ -15,7 +15,8 @@
   </div>
   <!-- Basic Info Form -->
   <div class="row">
-    <div class="offset-5">
+    <div class="col-5"></div>
+    <div class="col">
       <h6 class="text-primary fw-bold">Basic Information</h6>
     </div>
   </div>
@@ -28,7 +29,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:first_name].each do |error| %>
           <div class="invalid-feedback d-block mb-2">
             <%= error %>
@@ -44,7 +46,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:last_name].each do |error| %>
           <div class="invalid-feedback d-block mb-2">
             <%= error %>
@@ -60,7 +63,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:email].each do |error| %>
           <div class="invalid-feedback d-block mb-4">
             <%= error %>
@@ -69,14 +73,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <%= f.submit "Save", class: "btn btn-success" %>
       </div>
     </div>
   <% end %>
   <!-- Password Form -->
   <div class="row">
-    <div class="offset-5">
+    <div class="col-5"></div>
+    <div class="col">
       <h6 class="text-primary font-weight-bold mt-5">Password</h6>
     </div>
   </div>
@@ -89,7 +95,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:current_password].each do |error| %>
           <div class="invalid-feedback d-block mb-4">
             <%= error %>
@@ -104,7 +111,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:password].each do |error| %>
           <div class="invalid-feedback d-block mb-4">
             <%= error %>
@@ -119,7 +127,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <% @user.errors[:password_confirmation].each do |error| %>
           <div class="invalid-feedback d-block mb-4">
             <%= error %>
@@ -128,7 +137,8 @@
       </div>
     </div>
     <div class="row">
-      <div class="offset-5">
+      <div class="col-5"></div>
+      <div class="col">
         <%= f.submit "Save", class: "btn btn-success" %>
       </div>
     </div>
