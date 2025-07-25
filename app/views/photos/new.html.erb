@@ -1,4 +1,4 @@
-<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
+<div class="p-4 m-4 w-100" style="min-height: 90vh; background: var(--bs-secondary-bg);">
   <h3 class="mb-4 border-bottom pb-2">New Photo</h3>
   <%= form_with model: @photo, url: user_photos_path(current_user), method: :post, html: { enctype: "multipart/form-data" } do |f| %>
     <div class="row mb-3">
@@ -27,7 +27,7 @@
       <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
     </div>
     <div class="mb-4">
-      <label class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2">
+      <label class="overflow-hidden d-flex align-items-center justify-content-center rounded upload-button">
         <%= image_tag '', alt: '', id: 'image-preview' %>
         <span class="fs-1 text-muted">+</span>
         <%= f.file_field :image, class: "d-none form-control #{'is-invalid' if @photo

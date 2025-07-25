@@ -93,6 +93,18 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
+#mode-theme-button {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid white;
+  width: 27px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
 /* Sidebar */
 .sidebar {
   /*max-width: var(--sidebar-width);*/
@@ -122,5 +134,5 @@
 }
 
 .sidebar-list__item--active {
-  color: var(--primary-color);
+  color: var(--primary-foreground-color);
 }

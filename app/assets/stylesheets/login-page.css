@@ -2,7 +2,7 @@
   width: 100vw;
   height: calc(100vh - var(--header-height));
   position: relative;
-  background: white;
+  background: var(--bs-body-bg);
 }
 
 .login-wrap {
@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: space-around;
 
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px;
 
@@ -37,9 +37,9 @@
 }
 
 .login-wrap__form {
-  background-color: #F9F9F9;
+  background-color: var(--bs-secondary-bg);
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   text-align: center;
 }

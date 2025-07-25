@@ -2,7 +2,7 @@
   width: 100vw;
   height: calc(100vh - var(--header-height));
   position: relative;
-  background: white;
+  background: var(--bs-body-bg);
 }
 
 .signup-wrap {
@@ -37,7 +37,7 @@
 }
 
 .signup-wrap__form {
-  background-color: #F9F9F9;
+  background-color: var(--bs-secondary-bg);
   padding: 30px;
   border: 1px solid #ddd;
   border-radius: 10px;

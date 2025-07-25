@@ -2,6 +2,18 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
+document.addEventListener("DOMContentLoaded", () => {
+    if (!localStorage.getItem("theme")) {
+        localStorage.setItem("theme", "light")
+        document.querySelector("html")?.setAttribute("data-bs-theme", "light")
+        document.querySelector("#mode-theme-button").classList.add("fa-regular");
+        document.querySelector("#mode-theme-button").classList.remove("fa-solid");
+    } else {
+        document.querySelector("html")?.setAttribute("data-bs-theme", localStorage.getItem("theme"))
+        document.querySelector("#mode-theme-button").classList.add("fa-solid");
+        document.querySelector("#mode-theme-button").classList.remove("fa-regular");
+    }
+})
 // users/edit
 document.addEventListener('turbo:load', () => {
     console.log("turbo loaded")
@@ -11,6 +23,21 @@ document.addEventListener('turbo:load', () => {
         document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
             if (index > 0) el.remove();
         });
+    })
+
+    document.querySelector("#mode-theme-button")?.addEventListener("click", (e) => {
+        const theme = localStorage.getItem("theme");
+        if (theme === "light") {
+            e.target.classList.remove("fa-regular");
+            e.target.classList.add("fa-solid");
+            document.querySelector("html")?.setAttribute("data-bs-theme", "dark")
+            localStorage.setItem("theme", "dark");
+        } else {
+            e.target.classList.remove("fa-solid");
+            e.target.classList.add("fa-regular");
+            document.querySelector("html")?.setAttribute("data-bs-theme", "light")
+            localStorage.setItem("theme", "light");
+        }
     })
 
 

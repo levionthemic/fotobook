@@ -27,15 +27,19 @@ class FeedController < ApplicationController
         likeable_id: photo_ids
       ).group(:likeable_id).count
     else
-      @items = Album.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
+      if user_signed_in?
+        @items = Album.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc)
+        album_ids = @items.map(&:id)
+
+        @likes_by_user = Like.where(
+          user_id: current_user.id,
+          likeable_type: "Album",
+          likeable_id: album_ids
+        ).pluck(:id, :likeable_id).to_set
+      else
+        @items = Album.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
+      end
       album_ids = @items.map(&:id)
-
-      @likes_by_user = Like.where(
-        user_id: current_user.id,
-        likeable_type: "Album",
-        likeable_id: album_ids
-      ).pluck(:id, :likeable_id).to_set
-
       @like_count = Like.where(
         likeable_type: "Album",
         likeable_id: album_ids

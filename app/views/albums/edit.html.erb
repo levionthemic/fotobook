@@ -1,4 +1,4 @@
-<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
+<div class="p-4 m-4 w-100" style="min-height: 90vh; background: var(--bs-secondary-bg);">
   <div class="d-flex align-items-center justify-content-between">
     <h5 class="font-weight-bold lh-1 m-0">Edit album</h5>
     <%= link_to "Back", request.referer, class: "btn btn-primary" %>
@@ -24,7 +24,7 @@
           <%= image_tag "#{photo.image}", alt: "", class: "w-100 h-100 object-fit-cover" %>
         </label>
       <% end %>
-      <button type="button" class="overflow-hidden d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #bDbdbd; background-color: #f2f2f2" data-bs-toggle="modal" data-bs-target="#uploadAlbum">
+      <button type="button" class="overflow-hidden d-flex align-items-center justify-content-center rounded upload-button" data-bs-toggle="modal" data-bs-target="#uploadAlbum">
         <span class="fs-1 text-muted">+</span>
       </button>
     </div>

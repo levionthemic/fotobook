@@ -1,0 +1,6 @@
+.upload-button {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    border: 2px dashed #bDbdbd;
+}

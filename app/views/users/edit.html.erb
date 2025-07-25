@@ -1,4 +1,4 @@
-<div class="bg-white p-4 m-4 w-100" style="min-height: 90vh;">
+<div class="p-4 m-4 w-100" style="min-height: 90vh; background: var(--bs-secondary-bg);">
   <h5 class="font-weight-bold mb-4">Edit User Profile</h5>
   <hr>
   <div class="d-flex flex-column align-items-center mb-4">
@@ -8,7 +8,7 @@
       <%= hidden_field_tag :form_type, "avatar" %>
       <label class="btn rounded position-relative" style="background: rgba(255,255,255, 0.7); top: -50px; font-size: 13px;">
         <%= f.file_field :avatar, class: "form-control-file mt-2 d-none", id: 'avatar-upload' %>
-        <span>CHANGE</span>
+        <span class="text-black">CHANGE</span>
       </label>
       <%= f.submit "Save", id: 'avatar-submit', class: "btn btn-success d-none rounded position-relative", style: "top: -50px;" %>
     <% end %>
