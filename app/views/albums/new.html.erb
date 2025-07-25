@@ -15,7 +15,7 @@
       <%= f.label :sharing_mode, "Sharing mode", class: "form-label" %>
       <%= f.select :sharing_mode, Photo.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
     </div>
-    <div class="mb-4 d-flex align-items-center gap-2 flex-wrap image-preview-list">
+    <div class="mb-4 d-flex align-items-center gap-2 flex-wrap image-preview-list" data-photo-ids="[]">
       <button type="button" class="overflow-hidden d-flex align-items-center justify-content-center rounded upload-button" data-bs-toggle="modal" data-bs-target="#uploadAlbum">
         <span class="fs-1 text-muted">+</span>
       </button>
