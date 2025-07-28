@@ -18,6 +18,18 @@ Rails.application.configure do
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
+  config.action_mailer.default_url_options = { host: "final-app-6z7p.onrender.com" }
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.ethereal.email",
+    port: 587,
+    user_name: ENV["ETHEREAL_USERNAME"],
+    password: ENV["ETHEREAL_PASSWORD"],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
