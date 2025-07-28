@@ -4,9 +4,9 @@
       <%= image_tag "#{item.image.url}", alt: "" %>
     <% else %>
       <div class="p-3 w-100 h-100 d-flex align-items-center justify-content-center">
-        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
-        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
-        <%= image_tag "#{item.photos[0].image.url}", alt: "" %>
+        <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
+        <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
+        <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
       </div>
     <% end %>
   </div>
