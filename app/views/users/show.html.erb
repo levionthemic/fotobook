@@ -93,9 +93,12 @@
               <% if user_signed_in? && @param_user_id.to_i === current_user.id %>
                 <%= link_to "EDIT", edit_album_path(item), class: "profile-list__item--after profile-list__item--after-albums" %>
               <% end %>
+              <% if item.sharing_mode == "private_mode" %>
+                <i class="fa-solid fa-lock profile-list__item--lock"></i>
+              <% end %>
             </div>
-            <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
-            <%= image_tag "#{item.photos[0]&.image || 'unknown-avatar.png'}", alt: "" %>
+            <%= image_tag "#{item.photos[1]&.image || 'unknown-avatar.png'}", alt: "" %>
+            <%= image_tag "#{item.photos[2]&.image || 'unknown-avatar.png'}", alt: "" %>
             <div class="profile-list__item--count">
               <span class="fs-3 lh-1"><%= item.photos.length %></span>
               PHOTOS

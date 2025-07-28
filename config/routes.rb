@@ -27,9 +27,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "photos#index"
-    resources :photos, only: [:index, :edit, :update]
-    resources :albums, only: [:index, :edit, :update]
-    resources :users, only: [:index, :edit, :update]
+    resources :photos, only: [:index, :edit, :update, :destroy]
+    resources :albums, only: [:index, :edit, :update, :destroy]
+    resources :users, only: [:index, :edit, :update, :destroy]
   end
   get "up" => "rails/health#show", as: :rails_health_check
 end

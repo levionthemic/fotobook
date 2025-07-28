@@ -3,7 +3,7 @@
     <h5 class="font-weight-bold lh-1 m-0">Edit album</h5>
     <%= link_to "Back", request.referer, class: "btn btn-primary" %>
   </div>
-  <%= form_with model: @album, url: admin_album_path(@album), method: :patch, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with model: @album, url: admin_album_path(@album), method: :patch do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>
@@ -18,25 +18,79 @@
       <%= f.label :sharing_mode, "Sharing mode", class: "form-label" %>
       <%= f.select :sharing_mode, Album.sharing_modes.keys.map { |mode| [mode.titleize, mode] }, {}, class: "form-select" %>
     </div>
-    <div class="mb-4">
-      <%= f.label :image, "Upload album", class: "form-label d-block" %>
-      <div class="w-100 d-flex gap-2 flex-wrap align-items-center">
-        <% @album.photos.each do |photo| %>
-          <label class="overflow-hidden d-flex align-items-center justify-content-center rounded position-relative" style="width: 150px; height: 150px;">
-            <%= image_tag "#{photo.image}", alt: "", class: "w-100 h-100 object-fit-cover" %>
-            <i class="fa-solid fa-xmark close-icon"></i>
-          </label>
-        <% end %>
-        <label class="d-flex align-items-center justify-content-center rounded" style="width: 150px; height: 150px; cursor: pointer; border: 2px dashed #BDBDBD; background-color: #F2F2F2;">
-          <span class="fs-1 text-muted">+</span>
-          <%= f.file_field :image, class: "d-none" %>
+    <div class="mb-4 d-flex align-items-center gap-2 flex-wrap image-preview-list" data-photo-ids="<%= @album.photos.map { |i| i.id } %>">
+      <% @album.photos.each do |photo| %>
+        <label class="overflow-hidden d-flex align-items-center justify-content-center rounded position-relative" style="width: 150px; height: 150px;">
+          <%= image_tag "#{photo.image}", alt: "", class: "w-100 h-100 object-fit-cover" %>
         </label>
-      </div>
+      <% end %>
+      <button type="button" class="overflow-hidden d-flex align-items-center justify-content-center rounded upload-button" data-bs-toggle="modal" data-bs-target="#uploadAlbum">
+        <span class="fs-1 text-muted">+</span>
+      </button>
     </div>
+    <%= hidden_field_tag "album[selected_photo_ids]", "" %>
     <%= f.submit "Save", class: "btn btn-success" %>
-    <button type="button" class="btn btn-danger ms-5">
+  <% end %>
+  <%= form_with model: @album, url: admin_album_path(@album), method: :delete do |form| %>
+    <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal"
+            data-bs-target="#deleteAlbumModal">
       <i class="fa-regular fa-trash-can"></i>
       Delete
     </button>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteAlbumModal" tabindex="-1" aria-labelledby="deleteAlbumModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteAlbumModalLabel">Warning!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure to delete this album?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <%= form.submit "Delete", class: "btn btn-danger" %>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
+
+<div class="modal fade" id="uploadAlbum" tabindex="-1" aria-labelledby="uploadAlbumLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="uploadAlbumLabel">Choose photos</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with url: "", class: "modal-photos" do |f| %>
+          <% @album.user.photos.each do |photo| %>
+            <div class="position-relative">
+              <%= f.check_box :image, id: "image_#{photo.id}", class: "modal-photo-checkbox", checked: @album.photos.include?(photo) %>
+              <%= f.label :image, class: "modal-photo-item", for: "image_#{photo.id}" do %>
+                <%= image_tag photo.image.url, alt: photo.title %>
+                <p class="text-center lh-1"><%= photo.title %></p>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="choose-photos">Select</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .delete-button {
+        position: relative;
+        top: -38px;
+        left: 120px;
+    }
+</style>

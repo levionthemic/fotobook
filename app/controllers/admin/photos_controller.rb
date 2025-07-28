@@ -22,6 +22,15 @@ module Admin
       end
     end
 
+    def destroy
+      @photo = Photo.find(params[:id])
+      if @photo.destroy
+        redirect_to admin_photos_path, notice: "Delete photo successfully!"
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def photo_params

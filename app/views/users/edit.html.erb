@@ -58,7 +58,8 @@
     <div class="form-group row align-items-center <%= 'mb-4' unless @user.errors[:email].any? %>">
       <label class="col-5 text-end fw-bold">Email</label>
       <div class="col-5">
-        <%= f.email_field :email, class: "form-control #{'is-invalid' if @user.errors[:email].any?}", placeholder:
+        <%= f.email_field :email, class: "form-control #{'is-invalid' if @user.errors[:email].any?}",
+                          disabled: true, placeholder:
           "someone@example.com" %>
       </div>
     </div>

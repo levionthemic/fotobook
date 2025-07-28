@@ -3,7 +3,7 @@
     <h5 class="font-weight-bold lh-1 m-0">Edit album</h5>
     <%= link_to "Back", request.referer, class: "btn btn-primary" %>
   </div>
-  <%= form_with model: @album, method: :patch, html: { enctype: "multipart/form-data" } do |f| %>
+  <%= form_with model: @album, method: :patch do |f| %>
     <div class="row mb-3">
       <div class="col-md-6">
         <%= f.label :title, "Title", class: "form-label" %>

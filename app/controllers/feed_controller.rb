@@ -74,7 +74,7 @@ class FeedController < ApplicationController
 
     if @tab == "photos"
       @items  = Photo.includes(:user)
-                     .where(sharing_mode: "public_mode")
+                     .public_m
                      .where.not(user_id: current_user.id)
                      .order(created_at: :desc)
       photo_ids = @items.map(&:id)
@@ -88,7 +88,7 @@ class FeedController < ApplicationController
         likeable_id: photo_ids
       ).group(:likeable_id).count
     else
-      @items = Album.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
+      @items = Album.includes(:user).public_m.order(created_at: :desc)
       album_ids = @items.map(&:id)
 
       @likes_by_user = Like.where(

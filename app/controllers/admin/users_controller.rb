@@ -14,11 +14,12 @@ module Admin
 
     def update
       @user = User.find(params[:id])
+      @user.skip_reconfirmation!
       old_status = @user.status
       form_type = params[:form_type]
       if form_type == "avatar"
-        if current_user.update(avatar: params[:user][:avatar])
-          redirect_to user_path(current_user), notice: "Avatar was successfully updated."
+        if @user.update(avatar: params[:user][:avatar])
+          redirect_to admin_users_path, notice: "Avatar was successfully updated."
         else
           render :edit, status: :unprocessable_entity
         end
@@ -29,6 +30,15 @@ module Admin
           UserMailer.warning_inactive_mail(@user).deliver_now
         end
         redirect_to admin_users_path, notice: "User was successfully updated."
+      else
+        render :edit, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      @user = User.find(params[:id])
+      if @user.destroy
+        redirect_to admin_users_path, notice: "Delete user successfully!"
       else
         render :edit, status: :unprocessable_entity
       end

@@ -45,7 +45,7 @@
     </div>
     <%= f.submit "Save", class: "btn btn-success" %>
   <% end %>
-  <%= form_with model: @photo, method: :delete do |form| %>
+  <%= form_with model: @photo, url: admin_photo_path(@photo), method: :delete do |form| %>
     <button type="button" class="btn btn-danger delete-button" data-bs-toggle="modal"
             data-bs-target="#deletePhotoModal">
       <i class="fa-regular fa-trash-can"></i>
@@ -78,5 +78,12 @@
         position: relative;
         top: -38px;
         left: 120px;
+    }
+    .close-icon {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 1.5rem;
+        cursor: pointer;
     }
 </style>

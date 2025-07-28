@@ -13,17 +13,28 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#mode-theme-button").classList.add("fa-solid");
         document.querySelector("#mode-theme-button").classList.remove("fa-regular");
     }
+
+    document.querySelectorAll("[data-bs-toggle='modal']").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+                if (index > 0) el.remove();
+            });
+        });
+    });
+
 })
 // users/edit
 document.addEventListener('turbo:load', () => {
     console.log("turbo loaded")
 
-    document.querySelector(".header__user--logout")?.addEventListener("click", (e) => {
-        // Reset
-        document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
-            if (index > 0) el.remove();
+    document.querySelectorAll("[data-bs-toggle='modal']").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".modal-backdrop").forEach((el, index) => {
+                if (index > 0) el.remove();
+            });
         });
-    })
+    });
+
 
     document.querySelector("#mode-theme-button")?.addEventListener("click", (e) => {
         const theme = localStorage.getItem("theme");
@@ -197,7 +208,7 @@ document.addEventListener('turbo:load', () => {
         }
     }
 
-    if (location.pathname.match(new RegExp(/^\/users\/\d+\/albums\/new$/)) || location.pathname.match(new RegExp(/^\/albums\/\d+\/edit$/))) {
+    if (location.pathname.match(new RegExp(/^\/users\/\d+\/albums\/new$/)) || location.pathname.match(new RegExp(/^\/(?:admin\/)?albums\/\d+\/edit$/))) {
         const imagePreviewList = document.querySelector('.image-preview-list')
         let photoIds = JSON.parse(imagePreviewList.dataset.photoIds)
         const choosePhotosButton = document.getElementById("choose-photos");
