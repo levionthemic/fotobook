@@ -1,5 +1,5 @@
 class Album < ApplicationRecord
-  default_scope { where(sharing_mode: :public_mode) }
+  scope :public_m, -> { where(sharing_mode: :public_mode) }
 
   belongs_to :user
 

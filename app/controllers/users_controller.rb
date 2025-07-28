@@ -10,14 +10,14 @@ class UsersController < ApplicationController
 
     case @tab
     when "photos"
-      @items = @user.photos
+      @items = @user.photos.public_m
       if current_user.id == @param_user_id.to_i
-        @items = Photo.unscoped.where(user_id: @user.id)
+        @items = @user.photos
       end
     when "albums"
-      @items = @user.albums
+      @items = @user.albums.public_m
       if current_user.id == @param_user_id.to_i
-        @items = @items.unscoped
+        @items = @user.albums
       end
     when "followers"
       @items = @user.followers
