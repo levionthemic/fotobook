@@ -28,7 +28,7 @@ class AlbumsController < ApplicationController
 
     @album = Album.find(params[:id])
     if @album.update(title: album_params[:title], description: album_params[:description], sharing_mode: album_params[:sharing_mode])
-      redirect_to user_path(current_user.id), notice: "Edit album successfully!"
+      redirect_to user_path(current_user.id, tab: "albums"), notice: "Edit album successfully!"
     else
       render :new, status: :unprocessable_entity
     end
@@ -37,7 +37,7 @@ class AlbumsController < ApplicationController
   def destroy
     @album = Album.find(params[:id])
     if @album.destroy
-      redirect_to user_path(current_user.id), notice: "Delete album successfully!"
+      redirect_to user_path(current_user.id, tab: "albums"), notice: "Delete album successfully!"
     else
       render :edit, status: :unprocessable_entity
     end

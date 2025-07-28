@@ -227,5 +227,7 @@ document.addEventListener('turbo:load', () => {
             const hiddenField = document.querySelector("input[name='album[selected_photo_ids]']");
             hiddenField.value = photoIds;
         })
+        const hiddenField = document.querySelector("input[name='album[selected_photo_ids]']");
+        hiddenField.value = photoIds;
     }
 })
