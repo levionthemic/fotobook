@@ -1,5 +1,6 @@
 class Photo < ApplicationRecord
   mount_uploader :image, PhotoUploader
+  default_scope { where(sharing_mode: :public_mode) }
 
   belongs_to :user
 

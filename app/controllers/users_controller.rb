@@ -8,25 +8,17 @@ class UsersController < ApplicationController
     @tab = params[:tab] || "photos"
     @items = []
 
-    if user_signed_in? && current_user.id != @param_user_id.to_i
-      case @tab
-      when "photos"
-        @items = @user.photos.filter { |e| e.sharing_mode == "public_mode" }
-      when "albums"
-        @items = @user.albums.filter { |e| e.sharing_mode == "public_mode" }
-      when "followers"
-        @items = @user.followers
-      when "followings"
-        @items = @user.followings
-      end
-      return
-    end
-
     case @tab
     when "photos"
       @items = @user.photos
+      if current_user.id == @param_user_id.to_i
+        @items = Photo.unscoped.where(user_id: @user.id)
+      end
     when "albums"
       @items = @user.albums
+      if current_user.id == @param_user_id.to_i
+        @items = @items.unscoped
+      end
     when "followers"
       @items = @user.followers
     when "followings"

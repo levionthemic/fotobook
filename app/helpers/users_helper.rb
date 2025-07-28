@@ -2,6 +2,10 @@
 
 module UsersHelper
   def is_following?(following_id)
-    @user.followings.any? { |u| u.id == following_id }
+    user =  current_user.followings.find_by(id: following_id)
+    if user
+      return true
+    end
+    false
   end
 end

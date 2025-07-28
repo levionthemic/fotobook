@@ -29,9 +29,9 @@
         <%= link_to user_path(@user, tab: 'photos'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'photos')] do %>
           <span class="fs-4">
             <% if current_user.id == @param_user_id.to_i %>
-              <%= @user.photos.length %>
+              <%= Photo.unscoped.where(user_id: @user.id).length %>
             <% else %>
-              <%= @user.photos.filter { |e| e.sharing_mode == "public_mode" }.length %>
+              <%= @user.photos.length %>
             <% end %>
           </span>
           <span>PHOTOS</span>
@@ -40,9 +40,9 @@
         <%= link_to user_path(@user, tab: 'albums'), class: ['profile-info__tags--item', ('profile-info__tags--item--active' if @tab == 'albums')] do %>
           <span class="fs-4">
             <% if current_user.id == @param_user_id.to_i %>
-              <%= @user.albums.length %>
+              <%= Album.unscoped.where(user_id: @user.id).length %>
             <% else %>
-              <%= @user.albums.filter { |e| e.sharing_mode == "public_mode" }.length %>
+              <%= @user.albums.length %>
             <% end %>
           </span>
           <span>ALBUMS</span>
@@ -105,8 +105,10 @@
         </div>
       <% elsif @tab == 'followings' %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
-          <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <%= link_to user_path(item.id), class: "d-flex flex-column align-items-center justify-content-center gap-2" do %>
+            <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
+            <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <% end %>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">
               <span class="fs-2 lh-1 fw-bold"><%= item.photos.length %></span>
@@ -138,8 +140,10 @@
         </div>
       <% else %>
         <div class="d-flex flex-column align-items-center justify-content-center gap-2 profile-followings__item">
-          <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
-          <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <%= link_to user_path(item.id), class: "d-flex flex-column align-items-center justify-content-center gap-2" do %>
+            <%= image_tag "#{item.avatar.url}", alt: "", class: "profile-followings__item--avatar" %>
+            <div class="fw-bold fs-6 mb-1"><%= item.first_name %> <%= item.last_name %></div>
+          <% end %>
           <div class="d-flex align-items-center justify-content-center gap-4 profile-followings__item--stat ">
             <div class="d-flex flex-column align-items-center justify-content-center ">
               <span class="fs-2 lh-1 fw-bold"><%= item.photos.length %></span>
