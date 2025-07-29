@@ -1,50 +1,24 @@
 class FeedController < ApplicationController
   before_action :check_user_only
+  before_action :get_tab_and_model
+  skip_before_action :authenticate_user!, only: [:index]
+
+  ITEMS_PER_PAGE = 6
 
   def index
-    @tab = params[:tab] || "photos"
-    @items = []
-
-    if @tab == "photos"
-      if user_signed_in?
-        @items = Photo.includes(:user)
-                       .where(sharing_mode: "public_mode")
-                       .where.not(user_id: current_user.id)
-                       .order(created_at: :desc)
-        photo_ids = @items.map(&:id)
-        @likes_by_user = Like.where(
-          user_id: current_user.id,
-          likeable_type: "Photo",
-          likeable_id: photo_ids
-        ).pluck(:id, :likeable_id).to_set
-      else
-        @items = Photo.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
-      end
-      photo_ids = @items.map(&:id)
-
-      @like_count = Like.where(
-        likeable_type: "Photo",
-        likeable_id: photo_ids
-      ).group(:likeable_id).count
-    else
-      if user_signed_in?
-        @items = Album.includes(:user).where(sharing_mode: "public_mode").where.not(user_id: current_user.id).order(created_at: :desc)
-        album_ids = @items.map(&:id)
-
-        @likes_by_user = Like.where(
-          user_id: current_user.id,
-          likeable_type: "Album",
-          likeable_id: album_ids
-        ).pluck(:id, :likeable_id).to_set
-      else
-        @items = Album.includes(:user).where(sharing_mode: "public_mode").order(created_at: :desc)
-      end
-      album_ids = @items.map(&:id)
-      @like_count = Like.where(
-        likeable_type: "Album",
-        likeable_id: album_ids
-      ).group(:likeable_id).count
+    @items = @model.constantize.includes(:user).public_m.order(created_at: :desc)
+    if user_signed_in?
+      @items = @items.where.not(user_id: current_user.id)
+      @likes_by_user = Like.where(
+        user_id: current_user.id,
+        likeable_type: @model,
+        likeable_id: @items.map(&:id)
+      ).pluck(:id, :likeable_id).to_set
     end
+    @like_count = Like.where(
+      likeable_type: @model,
+      likeable_id: @items.map(&:id)
+    ).group(:likeable_id).count
 
     user_ids = @items.map(&:user_id)
 
@@ -57,7 +31,7 @@ class FeedController < ApplicationController
       @items = @items.select { |item| @followings.include?(item.user.id) }
       @items = Kaminari.paginate_array(@items).page(params[:page]).per(6)
     else
-      @items = @items.page(params[:page]).per(6)
+      @items = @items.page(params[:page]).per(ITEMS_PER_PAGE)
     end
 
     @is_discover = false
@@ -70,38 +44,21 @@ class FeedController < ApplicationController
 
   def show_discover
     authorize! :read, current_user unless current_user.user?
-    @tab = params[:tab] || "photos"
 
-    if @tab == "photos"
-      @items  = Photo.includes(:user)
-                     .public_m
-                     .where.not(user_id: current_user.id)
-                     .order(created_at: :desc)
-      photo_ids = @items.map(&:id)
-      @likes_by_user = Like.where(
-        user_id: current_user.id,
-        likeable_type: "Photo",
-        likeable_id: photo_ids
-      ).pluck(:id, :likeable_id).to_set
-      @like_count = Like.where(
-        likeable_type: "Photo",
-        likeable_id: photo_ids
-      ).group(:likeable_id).count
-    else
-      @items = Album.includes(:user).public_m.order(created_at: :desc)
-      album_ids = @items.map(&:id)
-
-      @likes_by_user = Like.where(
-        user_id: current_user.id,
-        likeable_type: "Album",
-        likeable_id: album_ids
-      ).pluck(:id, :likeable_id).to_set
-
-      @like_count = Like.where(
-        likeable_type: "Album",
-        likeable_id: album_ids
-      ).group(:likeable_id).count
-    end
+    @items = @model.constantize.includes(:user)
+                  .public_m
+                  .where.not(user_id: current_user.id)
+                  .order(created_at: :desc)
+    photo_ids = @items.map(&:id)
+    @likes_by_user = Like.where(
+      user_id: current_user.id,
+      likeable_type: @model,
+      likeable_id:@items.map(&:id)
+    ).pluck(:id, :likeable_id).to_set
+    @like_count = Like.where(
+      likeable_type: @model,
+      likeable_id: @items.map(&:id)
+    ).group(:likeable_id).count
 
     user_ids = @items.map(&:user_id)
 
@@ -110,7 +67,7 @@ class FeedController < ApplicationController
       following_id: user_ids
     ).pluck(:following_id).to_set
 
-    @items = @items.page(params[:page]).per(6)
+    @items = @items.page(params[:page]).per(ITEMS_PER_PAGE)
 
     @is_discover = true
 
@@ -126,6 +83,11 @@ class FeedController < ApplicationController
     unless !current_user || current_user.user?
       redirect_to admin_root_path, alert: "Bạn không có quyền truy cập trang này."
     end
+  end
+
+  def get_tab_and_model
+    @tab = params[:tab] || "photos"
+    @model = @tab == "photos" ? "Photo" : "Album"
   end
 
 end

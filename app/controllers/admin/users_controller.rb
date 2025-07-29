@@ -2,18 +2,21 @@
 
 module Admin
   class UsersController < ApplicationController
+    ITEMS_PER_PAGE = 20
+
+    include AdminMethods
+
     load_and_authorize_resource
-    before_action :check_admin_only
+    before_action :get_user, only: [:edit, :update, :destroy]
+
     def index
-      @users = User.all
+      @users = User.page(params[:page]).per(ITEMS_PER_PAGE)
     end
 
     def edit
-      @user = User.find(params[:id])
     end
 
     def update
-      @user = User.find(params[:id])
       @user.skip_reconfirmation!
       old_status = @user.status
       form_type = params[:form_type]
@@ -36,7 +39,6 @@ module Admin
     end
 
     def destroy
-      @user = User.find(params[:id])
       if @user.destroy
         redirect_to admin_users_path, notice: "Delete user successfully!"
       else
@@ -50,10 +52,8 @@ module Admin
       params.require(:user).permit(:avatar, :first_name, :last_name, :email, :password, :password_confirmation, :status)
     end
 
-    def check_admin_only
-      unless current_user&.admin?
-        redirect_to root_path, alert: "Bạn không có quyền truy cập trang admin."
-      end
+    def get_user
+      @user = User.find(params[:id])
     end
   end
 end

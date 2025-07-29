@@ -2,19 +2,21 @@
 
 module Admin
   class PhotosController < ApplicationController
+    ITEMS_PER_PAGE = 40
+
+    include AdminMethods
+
     load_and_authorize_resource
-    before_action :check_admin_only
+    before_action :get_photo, only: [:edit, :update, :destroy]
 
     def index
-      @photos = Photo.all.page(params[:page]).per(40)
+      @photos = Photo.page(params[:page]).per(ITEMS_PER_PAGE)
     end
 
     def edit
-      @photo = Photo.find(params[:id])
     end
 
     def update
-      @photo = Photo.find(params[:id])
       if @photo.update(photo_params)
         redirect_to admin_photos_path, notice: "Photo was successfully updated!"
       else
@@ -23,7 +25,6 @@ module Admin
     end
 
     def destroy
-      @photo = Photo.find(params[:id])
       if @photo.destroy
         redirect_to admin_photos_path, notice: "Delete photo successfully!"
       else
@@ -37,10 +38,8 @@ module Admin
       params.require(:photo).permit(:title, :description, :sharing_mode, :image)
     end
 
-    def check_admin_only
-      unless current_user&.admin?
-        redirect_to root_path, alert: "Bạn không có quyền truy cập trang admin."
-      end
+    def get_photo
+      @photo = Photo.find(params[:id])
     end
   end
 end

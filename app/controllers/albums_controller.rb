@@ -10,7 +10,7 @@ class AlbumsController < ApplicationController
 
   def create
     photo_ids = String(album_params[:selected_photo_ids]).split(",")
-    @album = current_user.albums.new(title: album_params[:title], description: album_params[:description], sharing_mode: album_params[:sharing_mode])
+    @album = current_user.albums.new(album_params.except(:selected_photo_ids))
     if @album.save
       AlbumPhoto.insert_all(photo_ids.map { |pid| { album_id: @album.id, photo_id: pid.to_i } })
       redirect_to user_path(current_user.id), notice: "Create album successfully!"
@@ -27,7 +27,7 @@ class AlbumsController < ApplicationController
     AlbumPhoto.insert_all(photo_ids.map { |pid| { album_id: params[:id], photo_id: pid.to_i } })
 
     @album = Album.find(params[:id])
-    if @album.update(title: album_params[:title], description: album_params[:description], sharing_mode: album_params[:sharing_mode])
+    if @album.update(album_params.except(:selected_photo_ids))
       redirect_to user_path(current_user.id, tab: "albums"), notice: "Edit album successfully!"
     else
       render :new, status: :unprocessable_entity

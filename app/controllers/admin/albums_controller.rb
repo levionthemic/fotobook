@@ -2,14 +2,18 @@
 
 module Admin
   class AlbumsController < ApplicationController
+    ITEMS_PER_PAGE = 40
+
+    include AdminMethods
+
     load_and_authorize_resource
-    before_action :check_admin_only
+    before_action :get_album, only: [:edit, :update, :destroy]
+
     def index
-      @albums = Album.all.page(params[:page]).per(10)
+      @albums = Album.page(params[:page]).per(ITEMS_PER_PAGE)
     end
 
     def edit
-      @album = Album.find(params[:id])
     end
 
     def update
@@ -19,8 +23,7 @@ module Admin
       AlbumPhoto.where(album_id: params[:id]).delete_all
       AlbumPhoto.insert_all(photo_ids.map { |pid| { album_id: params[:id], photo_id: pid.to_i } })
 
-      @album = Album.find(params[:id])
-      if @album.update(title: album_params[:title], description: album_params[:description], sharing_mode: album_params[:sharing_mode])
+      if @album.update(album_params.except(:selected_photo_ids))
         redirect_to admin_albums_path, notice: "Edit album successfully!"
       else
         render :new, status: :unprocessable_entity
@@ -28,7 +31,6 @@ module Admin
     end
 
     def destroy
-      @album = Album.find(params[:id])
       if @album.destroy
         redirect_to admin_albums_path, notice: "Delete album successfully!"
       else
@@ -42,10 +44,8 @@ module Admin
       params.require(:album).permit(:title, :description, :sharing_mode, :selected_photo_ids)
     end
 
-    def check_admin_only
-      unless current_user&.admin?
-        redirect_to root_path, alert: "Bạn không có quyền truy cập trang admin."
-      end
+    def get_album
+      @album = Album.find(params[:id])
     end
   end
 end

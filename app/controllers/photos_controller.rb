@@ -1,5 +1,6 @@
 class PhotosController < ApplicationController
   load_and_authorize_resource
+  before_action :get_photo, only: [:edit, :update, :destroy]
 
   def index
 
@@ -21,11 +22,9 @@ class PhotosController < ApplicationController
   end
 
   def edit
-    @photo = Photo.find(params[:id])
   end
 
   def update
-    @photo = Photo.find(params[:id])
 
     if @photo.update(photo_params)
       redirect_to user_path(current_user.id), notice: "Edit photo successfully!"
@@ -35,7 +34,6 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    @photo = Photo.find(params[:id])
     if @photo.destroy
       redirect_to user_path(current_user.id), notice: "Delete photo successfully!"
     else
@@ -47,5 +45,9 @@ class PhotosController < ApplicationController
 
   def photo_params
     params.require(:photo).permit(:title, :description, :sharing_mode, :image)
+  end
+
+  def get_photo
+    @photo = Photo.find(params[:id])
   end
 end
