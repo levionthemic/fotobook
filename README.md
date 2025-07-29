@@ -4,6 +4,20 @@
 
 ---
 
+## Demo
+- Log in: https://www.loom.com/share/02644496d0954288aed27ec71964badd?sid=5865d0b7-e7b9-4dc6-8f07-22b9291ff4b3
+- Sign up: https://www.loom.com/share/264f1cef12bb404abad1144eb73e38a8?sid=31cbeaa8-dce2-41fb-966a-2046a03baea0
+- Feed/discover page: https://www.loom.com/share/096c67d538b74f05bf8be50edea6991c?sid=8cadef82-5ffa-4e03-b4e6-5ddace43fbc5
+- Photo CRUD: https://www.loom.com/share/9e93e401748d45c08fd021d6cbd02a95?sid=8af327f8-9cb5-4e01-ae61-97ce40a83965
+- Album CRUD: https://www.loom.com/share/3b8d3705bb9540639a10944565164c06?sid=e8c985d5-2269-41d9-8601-77904f81502e
+- Edit Profile: https://www.loom.com/share/093ba6148ed1429dbbe15cba310fb674?sid=2891b919-5d06-46f9-b212-66607f6d88e3
+- Follow: https://www.loom.com/share/27f00dc94b184b2aba58e9f11a7feda4?sid=47ede388-fa5e-4daf-b48f-510d3da629eb
+- Admin Photos: https://www.loom.com/share/07cdc3dacb014e01bc1a7178f8f034f0?sid=17cafb90-6082-472c-bf93-3a9acbb290d9
+- Admin Albums: https://www.loom.com/share/651a09a991974b5d822fdf99ec303214?sid=84e95cef-5661-404d-927e-f31e6dc020b0
+- Admin Users: https://www.loom.com/share/8fc666915a6d46c19050afc68e48e9fd?sid=8d5b8e84-6a07-446e-a200-d32276402356
+
+---
+
 ## 🚀 Features
 
 ### ✅ Authentication
