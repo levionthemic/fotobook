@@ -132,9 +132,9 @@
             <% if is_following?(item.id) %>
               <div class="profile-info__badge"><span>following</span></div>
             <% else %>
-              <%= form_with url: user_followers_path(current_user), local: true do |f| %>
+              <%= form_with url: user_followers_path(current_user) do |f| %>
                 <%= hidden_field_tag :following_id, item.id %>
-                <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive" do %>
+                <%= f.button type: "submit", class: "profile-info__badge profile-info__badge--inactive", data: { turbo: false } do %>
                   <span>follow</span>
                 <% end %>
               <% end %>
