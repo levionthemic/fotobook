@@ -20,9 +20,9 @@ class UsersController < ApplicationController
         @items = @user.albums
       end
     when "followers"
-      @items = @user.followers
+      @items = @user.followers.where.not(id: current_user.id)
     when "followings"
-      @items = @user.followings
+      @items = @user.followings.where.not(id: current_user.id)
     end
   end
 
