@@ -16,6 +16,9 @@
 - Admin Albums: https://www.loom.com/share/651a09a991974b5d822fdf99ec303214?sid=84e95cef-5661-404d-927e-f31e6dc020b0
 - Admin Users: https://www.loom.com/share/8fc666915a6d46c19050afc68e48e9fd?sid=8d5b8e84-6a07-446e-a200-d32276402356
 
+Sample account:
+- User: email - "user4444@fotobook.com", pass - "password"
+- Admin: email - "admin@fotobook.com", password - "password"
 ---
 
 ## 🚀 Features
@@ -95,10 +98,6 @@ rails server
 
 5. **Access the app**  
    Visit `http://localhost:3000`
-
-Sample account:
-- User: email - "user1@fotobook.com", pass - "password"
-- Admin: email - "admin@fotobook.com", password - "password"
 
 ---
 
